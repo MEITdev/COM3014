@@ -1,4 +1,5 @@
 #COM3014 Group Project
+We are doing stuff...
 
 ##Best Practices
 
