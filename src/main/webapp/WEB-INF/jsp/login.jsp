@@ -22,6 +22,8 @@
     <link href="resources/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="resources/css/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="resources/css/animate.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="resources/css/custom.min.css" rel="stylesheet">
   </head>
