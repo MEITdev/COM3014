@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Welcome page (not logged in)</h1>
+        <h1>Welcome page (not logged in)</h1><br>
+        <a href="login">Login Here</a>
     </body>
 </html>
