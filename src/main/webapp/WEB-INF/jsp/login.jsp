@@ -17,7 +17,7 @@
     <title>Footballs</title>
 
     <!-- Bootstrap -->
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <!-- Font Awesome -->
     <link href="resources/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
