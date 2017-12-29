@@ -10,6 +10,6 @@ package com.group9.generic;
  * @author Black
  */
 public class Registry {
-    public static String[] publicSites = {"/", "/login"};
+    public static String[] publicSites = {"/", "/login", "/resources/**"};
     public static String[] adminSites = {"/admin"};
 }
