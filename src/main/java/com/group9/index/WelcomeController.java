@@ -23,7 +23,7 @@ public class WelcomeController
 @RequestMapping(value="/", method=RequestMethod.GET)
   public String welcomePage (ModelMap model, Principal principal)
   {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
     if(     SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){

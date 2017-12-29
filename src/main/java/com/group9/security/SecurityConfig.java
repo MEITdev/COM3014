@@ -6,6 +6,9 @@
 package com.group9.security;
 
 
+import com.group9.generic.Registry;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,28 +16,27 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
-  @Autowired
-  public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception
-  {
-    auth
-      .inMemoryAuthentication()
-        .withUser("user").password("password").roles("USER");
-  }
+    @Autowired
+    private DataSource dataSource;
+    
+    @Autowired
+    public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception
+    {
+      auth.jdbcAuthentication().dataSource(dataSource);
+    }
 	
 protected void configure(HttpSecurity http) throws Exception {
             
     
     http.authorizeRequests()
-          .antMatchers("/login", "/").permitAll()
+          .antMatchers(Registry.publicSites).permitAll()
             .anyRequest().authenticated()
             .and()
-            
-            
-            
         .formLogin()
           .loginPage("/login")
             .and()

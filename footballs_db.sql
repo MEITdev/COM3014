@@ -87,10 +87,10 @@ CREATE TABLE `teams` (
   `team_budget` int(11) DEFAULT NULL,
   `no_wins` int(11) DEFAULT NULL,
   `no_losses` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`team_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  KEY `username` (`username`),
+  CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,16 +110,25 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) DEFAULT NULL,
-  `email` varchar(70) DEFAULT NULL,
-  `password` varchar(150) DEFAULT NULL,
-  `permission_level` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
+create table `users`(
+	`username` varchar(50) not null primary key,
+	`password` varchar(50) not null,
+	`email` varchar(70) DEFAULT NULL,
+	`enabled` boolean not null);
+	
+DROP TABLE IF EXISTS `authorities`;
+create table `authorities` (
+	`username` varchar(50) not null,
+	`authority` varchar(50) not null,
+	constraint fk_authorities_users foreign key(username) references users(username));
+	create unique index ix_auth_username on authorities (username,authority);
+
+
+	
+	 
+	 
+	 
 --
 -- Dumping data for table `users`
 --
