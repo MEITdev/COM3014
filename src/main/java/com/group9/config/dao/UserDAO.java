@@ -31,7 +31,7 @@ public interface UserDAO {
    public void delete(String username) throws UserNotFoundException;
    
    
-   public void update(String username, String password, String email, int enabled) throws UserNotFoundException;
+   public void update(String username, String password, String email, int enabled, Set<UserRole> roles) throws UserNotFoundException;
 }
     
 

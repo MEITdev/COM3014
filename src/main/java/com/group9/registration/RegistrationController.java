@@ -6,6 +6,7 @@
 package com.group9.Registration;
 
 import com.group9.exceptions.UserAlreadyExistsException;
+import com.group9.exceptions.UserNotFoundException;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
@@ -30,8 +31,20 @@ public class RegistrationController
   @RequestMapping(value="/register", method=RequestMethod.GET)
   public String viewRegistrationPage (ModelMap map)
   {
-
-  	return "register";
+        
+        //UPDATING USER
+        /*       
+        try {
+            User pedro = userJDBCTemplate.getUser("pedro");
+            pedro.getRoles().add(UserRole.PREMIUM);
+            userJDBCTemplate.update(pedro.getUsername(), pedro.getPassword(), pedro.getEmail(), pedro.getEnabled(), pedro.getRoles());
+            
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+      
+        return "register";
   }
 	
   
@@ -48,6 +61,7 @@ public class RegistrationController
         } catch (UserAlreadyExistsException ex) {
             map.put("message", "Username already taken!");
         }
+        
   	return "register";
   }
 }

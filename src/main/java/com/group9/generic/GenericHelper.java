@@ -1,5 +1,6 @@
 package com.group9.generic;
 
+import com.group9.exceptions.RoleNotRecognised;
 import com.group9.login.UserRole;
 
 
@@ -21,5 +22,22 @@ public class GenericHelper {
                 break;
         }
         return "";
+    }
+    
+    
+    
+    public static UserRole stringToRole(String role) throws RoleNotRecognised{
+        if(null != role)switch (role) {
+            case "ROLE_ADMIN":
+                return UserRole.ADMIN;
+            case "ROLE_USER":
+                return UserRole.USER;
+            case "ROLE_PREMIUM":
+                return UserRole.PREMIUM;
+            default:
+                break;
+        }
+        throw new RoleNotRecognised("Role "+role+" not recognised");
+    
     }
 }

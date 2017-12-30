@@ -28,10 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     
     @Autowired
     private DataSource dataSource;
-    
-    @Autowired
-    private UserDAO userDAO;
-    
+
     @Autowired
     public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception
     {
