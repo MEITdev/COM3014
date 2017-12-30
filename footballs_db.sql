@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2017 at 05:43 PM
+-- Generation Time: Dec 30, 2017 at 02:12 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -28,7 +28,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `authorities`
 --
 
-DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE `authorities` (
   `username` varchar(50) NOT NULL,
   `authority` varchar(50) NOT NULL
@@ -40,6 +39,7 @@ CREATE TABLE `authorities` (
 
 INSERT INTO `authorities` (`username`, `authority`) VALUES
 ('ivan', 'ROLE_ADMIN'),
+('ivan', 'ROLE_PREMIUM'),
 ('ivan', 'ROLE_USER'),
 ('marek', 'ROLE_ADMIN'),
 ('marek', 'ROLE_USER'),
@@ -52,7 +52,6 @@ INSERT INTO `authorities` (`username`, `authority`) VALUES
 -- Table structure for table `players`
 --
 
-DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` (
   `player_id` int(11) NOT NULL,
   `forename` varchar(45) DEFAULT NULL,
@@ -70,7 +69,6 @@ CREATE TABLE `players` (
 -- Table structure for table `schedule`
 --
 
-DROP TABLE IF EXISTS `schedule`;
 CREATE TABLE `schedule` (
   `game_id` int(11) NOT NULL,
   `game_date` datetime DEFAULT NULL,
@@ -87,7 +85,6 @@ CREATE TABLE `schedule` (
 -- Table structure for table `teams`
 --
 
-DROP TABLE IF EXISTS `teams`;
 CREATE TABLE `teams` (
   `team_id` int(11) NOT NULL,
   `team_name` varchar(100) DEFAULT NULL,
@@ -103,7 +100,6 @@ CREATE TABLE `teams` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(70) NOT NULL,
@@ -116,9 +112,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`username`, `password`, `email`, `enabled`) VALUES
-('ivan', '$2a$10$VgbGZ118nhzbIHWeejOQn.Yjl5Cs0IWokD/HGvKS7XLMW9F80BK7y', NULL, 1),
-('marek', '$2a$10$EOdBzoRUs.DFOgyn6MBU/OCAf5x7EwhY5OPF0t8AgdLoLiYonCebW', NULL, 1),
-('pavel', '$2a$10$tvLXIDDqWtUMBSd2ksFje.Ljy5LKf5GrvtVSSaAgyq9bq9K40bnJa', NULL, 1);
+('ivan', '$2a$10$VgbGZ118nhzbIHWeejOQn.Yjl5Cs0IWokD/HGvKS7XLMW9F80BK7y', '', 1),
+('marek', '$2a$10$EOdBzoRUs.DFOgyn6MBU/OCAf5x7EwhY5OPF0t8AgdLoLiYonCebW', '', 1),
+('pavel', '$2a$10$tvLXIDDqWtUMBSd2ksFje.Ljy5LKf5GrvtVSSaAgyq9bq9K40bnJa', '', 1);
 
 --
 -- Indexes for dumped tables
@@ -186,7 +182,7 @@ ALTER TABLE `teams`
 -- Constraints for table `authorities`
 --
 ALTER TABLE `authorities`
-  ADD CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
+  ADD CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `players`

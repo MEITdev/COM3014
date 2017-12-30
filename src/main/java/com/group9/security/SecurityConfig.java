@@ -19,15 +19,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
+   
     @Autowired 
     private BCryptPasswordEncoder encryptionEncoder;
     
     @Autowired
     private DataSource dataSource;
+    
+
 
     @Autowired
     public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception
@@ -39,13 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-          .antMatchers(Registry.publicSites).permitAll()
-            .anyRequest().authenticated()
-            .and()
-        .formLogin()
-          .loginPage("/login")
-            .and()
-        .httpBasic();
+            
+            .antMatchers(Registry.publicSites).permitAll()
+            .antMatchers(Registry.adminSites).hasRole("ADMIN").
+                anyRequest().authenticated()
+                .and()
+                .formLogin().successHandler(new RefererRedirectionAuthenticationSuccessHandler())
+                .loginPage("/login").and().
+                
+            httpBasic();
 
   }
 }

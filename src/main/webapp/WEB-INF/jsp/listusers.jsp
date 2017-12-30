@@ -15,11 +15,11 @@
     </head>
     <body>
         <h1>All Users</h1>
-         <core:if test="${param.message != null}">
+         <c:if test="${param.message != null}">
             <div>
                  ${param.message}.
             </div>
-        </core:if>
+        </c:if>
        
         <div>
 		<table>

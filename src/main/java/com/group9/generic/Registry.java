@@ -14,6 +14,6 @@ package com.group9.generic;
 
 public class Registry {
     public static String[] publicSites = {"/", "/login", "/resources/**", "/register"};
-    public static String[] adminSites = {"/admin"};
+    public static String[] adminSites = {"/admin/**"};
 
 }

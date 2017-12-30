@@ -23,4 +23,9 @@
       class = "com.group9.login.UserJDBCTemplate">
       <property name = "dataSource" ref = "dataSource" />    
    </bean>
+
+    <bean
+        class="com.group9.security.RefererRedirectionAuthenticationSuccessHandler"
+        name="refererHandler">   
+    </bean>
 </beans>

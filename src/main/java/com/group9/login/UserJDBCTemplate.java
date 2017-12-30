@@ -119,6 +119,7 @@ public class UserJDBCTemplate implements UserDAO {
 
     @Override
     public void update(String username, String password, String email, int enabled, Set<UserRole> roles) throws UserNotFoundException {
+
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
         int count = jdbcTemplateObject.queryForObject(SQL, new Object[] { username }, Integer.class);
         
