@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> login
 package com.group9.security;
 
 
@@ -6,4 +10,8 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 public class SecurityInit extends AbstractSecurityWebApplicationInitializer
 {
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> login

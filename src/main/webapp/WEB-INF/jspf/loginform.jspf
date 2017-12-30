@@ -2,12 +2,20 @@
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <core:url value="/login" var="loginProcessingUrl" />
+<<<<<<< HEAD
 <div class="login_wrapper">
  <div class="animate form login_form">
   <section class="login_content">
     <form action="${loginProcessingUrl}" method="post">
      <h1>Login Form</h1>
      <core:if test="${param.error != null}">
+=======
+<form action="${loginProcessingUrl}" method="post">
+  <fieldset>
+    <legend>Login</legend>
+
+    <core:if test="${param.error != null}">
+>>>>>>> login
       <div>
           <b>Failed</b> to login.
         <core:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
@@ -15,6 +23,7 @@
                     value="${SPRING_SECURITY_LAST_EXCEPTION.message}"  />
         </core:if>
       </div>
+<<<<<<< HEAD
      </core:if>
      <div>
       <input type="text" class="form-control" placeholder="Username" id="username" name="username" />
@@ -41,3 +50,22 @@
   </section>
  </div>
 </div>
+=======
+    </core:if>
+
+
+    <p>
+      <label for="username">Username</label> <input type="text"
+        id="username" name="username" />
+    </p>
+    <p>
+      <label for="password">Password</label> <input type="password"
+        id="password" name="password" />
+    </p>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div>
+      <button type="submit" class="btn">Log in</button>
+    </div>
+  </fieldset>
+</form>
+>>>>>>> login

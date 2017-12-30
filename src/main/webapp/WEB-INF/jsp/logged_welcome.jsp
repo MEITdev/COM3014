@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<<<<<<< HEAD
         <!-- Meta, title, CSS, favicons, etc. -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -414,3 +415,15 @@
       </div>
     </body>
 </html>
+=======
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Welcome page (User Logged in)</h1>
+        <form action="logout" method="post">
+            <input type="submit" value="Logout"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>   
+        </form>
+    </body>
+</html>
+>>>>>>> login

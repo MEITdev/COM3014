@@ -29,12 +29,18 @@ protected void configure(HttpSecurity http) throws Exception {
             
     
     http.authorizeRequests()
+<<<<<<< HEAD
           .antMatchers("/login", "/").permitAll()
             .anyRequest().authenticated()
             .and()
             
             
             
+=======
+          .antMatchers("/login").permitAll()
+            .anyRequest().authenticated()
+            .and()
+>>>>>>> login
         .formLogin()
           .loginPage("/login")
             .and()

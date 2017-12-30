@@ -7,6 +7,7 @@
 
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -31,4 +32,14 @@
   <body class="login">
     <%@ include file="/WEB-INF/jspf/loginform.jspf"%>
   </body>
+=======
+<head>
+<title>Please Login</title>
+</head>
+
+<body>
+<%@ include file="/WEB-INF/jspf/loginform.jspf"%>
+
+</body>
+>>>>>>> login
 </html>

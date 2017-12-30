@@ -11,4 +11,8 @@ package com.group9.generic;
  */
 public class Registry {
     public static String publicSites =  "/login";
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> login
