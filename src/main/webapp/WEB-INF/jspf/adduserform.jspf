@@ -1,0 +1,29 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+
+<core:url value="/admin/users/add" var="registerProcessingUrl" />
+
+
+
+${message}
+
+<h2>User Information</h2>
+  <form action="${registerProcessingUrl}" method="post">
+    
+    <label for="username">Username</label>
+    <input type="text" class="form-control" placeholder="Username" id="username" name="username" /><br>
+    <label for="password">Password</label>
+    <input type="password" class="form-control" placeholder="Password" id="password" name="password" /><br>
+    <label for="email">Email</label>
+    <input type="email" class="form-control" placeholder="Email" id="email" name="email" /><br>
+    <label for="user">User</label>
+    <input id="user" name="user" type="checkbox"><br>
+    <label for="premium">Premium User</label>
+    <input id="premium" name="premium" type="checkbox"><br>
+    <label for="admin">Admin</label>
+    <input id="admin" name="admin" type="checkbox"><br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <button type="submit">Add User</button>
+
+</form>

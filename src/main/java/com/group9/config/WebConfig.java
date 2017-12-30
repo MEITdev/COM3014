@@ -30,9 +30,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Import({AppProperties.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    //private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
+    
     public WebConfig() {
-        //LOGGER.info("WebConfig() init");
+    
     }
 
     /**
