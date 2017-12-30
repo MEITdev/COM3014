@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2017 at 02:12 PM
+-- Generation Time: Dec 30, 2017 at 02:22 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `authorities`
 --
 
+DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE `authorities` (
   `username` varchar(50) NOT NULL,
   `authority` varchar(50) NOT NULL
@@ -52,6 +53,7 @@ INSERT INTO `authorities` (`username`, `authority`) VALUES
 -- Table structure for table `players`
 --
 
+DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` (
   `player_id` int(11) NOT NULL,
   `forename` varchar(45) DEFAULT NULL,
@@ -69,6 +71,7 @@ CREATE TABLE `players` (
 -- Table structure for table `schedule`
 --
 
+DROP TABLE IF EXISTS `schedule`;
 CREATE TABLE `schedule` (
   `game_id` int(11) NOT NULL,
   `game_date` datetime DEFAULT NULL,
@@ -85,6 +88,7 @@ CREATE TABLE `schedule` (
 -- Table structure for table `teams`
 --
 
+DROP TABLE IF EXISTS `teams`;
 CREATE TABLE `teams` (
   `team_id` int(11) NOT NULL,
   `team_name` varchar(100) DEFAULT NULL,
@@ -100,6 +104,7 @@ CREATE TABLE `teams` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(70) NOT NULL,
