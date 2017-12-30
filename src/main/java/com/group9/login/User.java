@@ -9,6 +9,15 @@ public class User {
    private String email;
    private int enabled;
    private Set<UserRole> roles;
+   private RoleHolder roleStringHolder;
+
+    public RoleHolder getRoleStringHolder() {
+        return roleStringHolder;
+    }
+
+    public void setRoleStringHolder(RoleHolder roleStringHolder) {
+        this.roleStringHolder = roleStringHolder;
+    }
 
     public String getUsername() {
         return username;
@@ -48,6 +57,7 @@ public class User {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+        this.roleStringHolder = new RoleHolder(this);
     }
 
  

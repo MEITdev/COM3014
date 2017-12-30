@@ -95,7 +95,7 @@ public class UserJDBCTemplate implements UserDAO {
     @Override
     public List<User> listUsers() {
         String SQL = "select * from users";
-        List <User> users = jdbcTemplateObject.query(SQL, new UserMapper());
+        List<User> users = jdbcTemplateObject.query(SQL, new UserMapper());
         
         for(User user:users){
             addUserRoles(user);
