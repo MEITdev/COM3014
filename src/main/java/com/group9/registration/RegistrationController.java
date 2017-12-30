@@ -5,10 +5,16 @@
  */
 package com.group9.Registration;
 
+import com.group9.exceptions.UserAlreadyExistsException;
+import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
+import com.group9.login.UserRole;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +37,17 @@ public class RegistrationController
   
   
   @RequestMapping(value="/register", method=RequestMethod.POST)
-  public String handleRegistration (@RequestParam String name,@RequestParam String password,
+  public String handleRegistration (@RequestParam String username,@RequestParam String password,
           @RequestParam String email, ModelMap map)
   {
-
-        userJDBCTemplate.create(name, password, email, 1);
+        
+        try {
+            Set<UserRole> roles = new HashSet<UserRole>() {{add(UserRole.USER);}};
+            userJDBCTemplate.create(username, password, email, 1, roles);
+            map.put("message", "User successfully registered!");
+        } catch (UserAlreadyExistsException ex) {
+            map.put("message", "Username already taken!");
+        }
   	return "register";
   }
 }

@@ -29,6 +29,7 @@
   </head>
 
   <body class="login">
+      
     <%@ include file="/WEB-INF/jspf/registerform.jspf"%>
   </body>
 </html>

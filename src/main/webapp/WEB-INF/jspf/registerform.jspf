@@ -3,6 +3,9 @@
 
 <core:url value="/register" var="registerProcessingUrl" />
 
+
+
+${message}
 <form action="${registerProcessingUrl}" method="post">
     
     <input type="text" class="form-control" placeholder="Username" id="username" name="username" />

@@ -10,10 +10,7 @@
      <core:if test="${param.error != null}">
       <div>
           <b>Failed</b> to login.
-        <core:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-            - <core:out
-                    value="${SPRING_SECURITY_LAST_EXCEPTION.message}"  />
-        </core:if>
+        
       </div>
      </core:if>
      <div>

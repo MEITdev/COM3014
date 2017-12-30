@@ -6,6 +6,7 @@
 package com.group9.security;
 
 
+import com.group9.config.dao.UserDAO;
 import com.group9.generic.Registry;
 import javax.sql.DataSource;
 
@@ -28,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     private DataSource dataSource;
     
+    @Autowired
+    private UserDAO userDAO;
     
     @Autowired
     public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception

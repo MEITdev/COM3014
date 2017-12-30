@@ -5,10 +5,13 @@
  */
 package com.group9.config.dao;
 
+import com.group9.exceptions.UserAlreadyExistsException;
+import com.group9.exceptions.UserNotFoundException;
 import com.group9.login.User;
 import java.util.List;
+import java.util.Set;
 import javax.sql.DataSource;
-
+import com.group9.login.UserRole;
 /**
  *
  * @author Black
@@ -17,18 +20,18 @@ public interface UserDAO {
    
    public void setDataSource(DataSource ds);
    
-   public void create(String username, String password, String email, int enabled);
+   public void create(String username, String password, String email, int enabled, Set<UserRole> roles) throws UserAlreadyExistsException;
    
    
-   public User getUser(String username);
+   public User getUser(String username) throws UserNotFoundException;
    
    
    public List<User> listUsers();
    
-   public void delete(String username);
+   public void delete(String username) throws UserNotFoundException;
    
    
-   public void update(String username, String password, String email, int enabled);
+   public void update(String username, String password, String email, int enabled) throws UserNotFoundException;
 }
     
 

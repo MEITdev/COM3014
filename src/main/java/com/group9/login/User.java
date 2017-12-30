@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.login;
 
-/**
- *
- * @author Black
- */
+import java.util.Set;
+
+
 public class User {
    private String username;
    private String password;
    private String email;
    private int enabled;
-   
+   private Set<UserRole> roles;
+
     public String getUsername() {
         return username;
     }
@@ -39,16 +34,23 @@ public class User {
         this.email = email;
     }
 
-    public int isEnabled() {
-        return this.enabled;
-        
+    public int getEnabled() {
+        return enabled;
     }
 
     public void setEnabled(int enabled) {
-       this.enabled = enabled;
-        
-        
+        this.enabled = enabled;
     }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
+ 
     
 
 }
