@@ -73,7 +73,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/css/");
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/img/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/js/");
@@ -120,7 +119,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:login.jsp"); // if you dont put "redirect:" it will resolve the view without going in the controller!!!
+        registry.addViewController("/").setViewName("redirect:welcome"); // if you dont put "redirect:" it will resolve the view without going in the controller!!!
     }
-    
 }

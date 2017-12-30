@@ -1,11 +1,4 @@
 #COM3014 Group Project
-Fantasy Football Manager 
-
-## What are we using
-- Spring 4.3.3
-- Bootstrap `version goes here once deciced`
-- MySQL for database
-- NetBeans as the IDE
 
 ##Best Practices
 Follow the best practices as described here: 

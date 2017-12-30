@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.generic;
-
-
+package com.group9.exceptions;
 
 /**
  *
  * @author Black
  */
-
-public class Registry {
-    public static String[] publicSites = {"/", "/login", "/resources/**", "/register"};
-    public static String[] adminSites = {"/admin/**"};
-
+public class UserNotFoundException extends Exception
+{
+  public UserNotFoundException(String message)
+  {
+    super(message);
+  }
 }

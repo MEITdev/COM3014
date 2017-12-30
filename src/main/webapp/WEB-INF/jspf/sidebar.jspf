@@ -1,0 +1,37 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core"%>
+
+            <c:url value="/admin/users/add" var="addUserPath" />
+            <c:url value="/admin/users" var="admin" />
+            
+            <div class="navbar nav_title" style="border: 0;">
+              <a class="site_title"><i class="fa fa-futbol-o" aria-hidden="true"></i> <span>Footballs!</span></a>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <ul class="nav side-menu">
+                  <li><a href="/COM3014/"><i class="fa fa-home"></i> Home</a>
+                  </li>
+                  
+                  <li><a><i class="fa fa-user"></i> Users <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="${admin}">All Users</a></li>
+                      <li><a href="${addUserPath}">Add User</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-list"></i> Team Roster</a>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Schedule <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#">Play Match</a></li>
+                      <li><a href="#">Match History</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
