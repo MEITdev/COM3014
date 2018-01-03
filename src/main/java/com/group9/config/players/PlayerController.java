@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
  
 
  
@@ -114,8 +115,8 @@ public class PlayerController {
     }
  
      
-    @DeleteMapping("player/{id}")
-    public String deletePlayer(@PathVariable int id) {
+    @DeleteMapping("player/delete")
+    public String deletePlayer(@RequestParam int id) {
         service.deletePlayerById(id);
         return "redirect:/players";
     }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -28,11 +29,22 @@
             <td>${player.forename}</td>
             
             <td><a href="<c:url value='/edit-${player.id}-employee' />">${player.id}</a></td>
-            <td><a href="<c:url value='/delete-${player.id}-employee' />">delete</a></td>
+            
+            <td>
+                <form action="<c:url value='/player/delete' />" method="delete">
+                    <input type="hidden" name="id" value="${player.id}"/>
+                    <input type="submit" value="Delete"/>
+                </form>
+            
+            
+           </td>
             </tr>
         </c:forEach>
     </table>
     <br/>
+    <form:form method="DELETE" action="/client/invoices/a"><input type="submit" value="delete"></form:form>
+
+    
     <a href="<c:url value='/new' />">Add New Employee</a>
 </body>
 </html>
