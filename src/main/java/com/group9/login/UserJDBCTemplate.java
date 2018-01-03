@@ -11,6 +11,7 @@ package com.group9.login;
  */
 import com.group9.config.dao.UserDAO;
 import com.group9.exceptions.RoleNotRecognised;
+import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.generic.BCryptHelper;
 import java.util.List;
 import javax.sql.DataSource;
@@ -38,7 +39,7 @@ public class UserJDBCTemplate implements UserDAO {
     }
 
     @Override
-    public void create(String username, String password, String email, int enabled, Set<UserRole> roles) throws UserAlreadyExistsException {
+    public void create(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserAlreadyExistsException , TeamNameAlreadyExists {
         
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
         int count = jdbcTemplateObject.queryForObject(SQL, new Object[] { username }, Integer.class);
@@ -118,7 +119,7 @@ public class UserJDBCTemplate implements UserDAO {
     }
 
     @Override
-    public void update(String username, String password, String email, int enabled, Set<UserRole> roles) throws UserNotFoundException {
+    public void update(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserNotFoundException {
 
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
         int count = jdbcTemplateObject.queryForObject(SQL, new Object[] { username }, Integer.class);
@@ -126,8 +127,8 @@ public class UserJDBCTemplate implements UserDAO {
         if(count == 0){
             throw new UserNotFoundException("User "+username+" was not found in DB");
         }else{
-            SQL = "update users set password = ?, email = ?, enabled = ? where username = ?";
-            jdbcTemplateObject.update(SQL, password, email, enabled, username);
+            SQL = "update users set password = ?, email = ?, enabled = ?, budget = ?, teamName = ? where username = ?";
+            jdbcTemplateObject.update(SQL, password, email, enabled, budget, teamName, username);
             
             SQL = "delete from authorities where username = ?";
             jdbcTemplateObject.update(SQL, username);

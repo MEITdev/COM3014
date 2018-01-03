@@ -16,4 +16,5 @@ public class Registry {
     public static String[] publicSites = {"/", "/login", "/resources/**", "/register"};
     public static String[] adminSites = {"/admin/**"};
 
+    public static int startingBudget = 1000000;
 }

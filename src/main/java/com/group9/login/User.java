@@ -10,7 +10,9 @@ public class User {
    private int enabled;
    private Set<UserRole> roles;
    private RoleHolder roleStringHolder;
-
+   private int budget;
+   private String teamName;
+   
     public RoleHolder getRoleStringHolder() {
         return roleStringHolder;
     }
@@ -59,6 +61,24 @@ public class User {
         this.roles = roles;
         this.roleStringHolder = new RoleHolder(this);
     }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+  
 
  
     

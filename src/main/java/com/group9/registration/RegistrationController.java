@@ -5,15 +5,13 @@
  */
 package com.group9.Registration;
 
+import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
-import com.group9.exceptions.UserNotFoundException;
-import com.group9.login.User;
+import com.group9.generic.Registry;
 import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -32,17 +30,6 @@ public class RegistrationController
   public String viewRegistrationPage (ModelMap map)
   {
         
-        //UPDATING USER
-        /*       
-        try {
-            User pedro = userJDBCTemplate.getUser("pedro");
-            pedro.getRoles().add(UserRole.PREMIUM);
-            userJDBCTemplate.update(pedro.getUsername(), pedro.getPassword(), pedro.getEmail(), pedro.getEnabled(), pedro.getRoles());
-            
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
       
         return "register";
   }
@@ -51,15 +38,17 @@ public class RegistrationController
   
   @RequestMapping(value="/register", method=RequestMethod.POST)
   public String handleRegistration (@RequestParam String username,@RequestParam String password,
-          @RequestParam String email, ModelMap map)
+          @RequestParam String email, @RequestParam String teamName, ModelMap map)
   {
         
         try {
             Set<UserRole> roles = new HashSet<UserRole>() {{add(UserRole.USER);}};
-            userJDBCTemplate.create(username, password, email, 1, roles);
+            userJDBCTemplate.create(username, password, email, 1, roles, Registry.startingBudget, teamName);
             map.put("message", "User successfully registered!");
         } catch (UserAlreadyExistsException ex) {
             map.put("message", "Username already taken!");
+        } catch (TeamNameAlreadyExists ex) {
+            map.put("message", "TeamName already in use!");
         }
         
   	return "register";

@@ -17,6 +17,11 @@
             <input type="password" class="form-control" placeholder="Password" id="password" name="password" value="${user.password}" /><br>
             <label for="email">Email</label>
             <input type="email" class="form-control" placeholder="Email" id="email" name="email" value="${user.email}" /><br>
+            <label for="budget">Budget</label>
+            <input type="budget" class="form-control" placeholder="budget" id="budget" name="budget"  value="${user.budget}" /><br>
+            <label for="teamName">Team Name</label>
+            <input type="teamName" class="form-control" placeholder="teamName" id="teamName" name="teamName" value="${user.teamName}"  /><br>
+            
             <label for="user">User</label>
             <input id="user" name="user" type="checkbox" <c:if test="${user.roleStringHolder.isUser=='yes'}"> checked </c:if> ><br>
             <label for="premium">Premium User</label>

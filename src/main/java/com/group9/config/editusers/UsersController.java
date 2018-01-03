@@ -5,6 +5,7 @@
  */
 package com.group9.config.editusers;
 
+import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.BCryptHelper;
@@ -62,7 +63,8 @@ public class UsersController {
     
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.POST)
     public String updateUser (@RequestParam String username,@RequestParam String password,
-            @RequestParam String email, @RequestParam(value = "admin", required = false) String admin, 
+            @RequestParam String email, @RequestParam int budget, @RequestParam String teamName, 
+            @RequestParam(value = "admin", required = false) String admin, 
             @RequestParam(value = "user", required = false)     String user,
             @RequestParam(value = "enabled", required = false)  String enabled,
             @RequestParam(value = "premium", required = false)  String premium, ModelMap map)
@@ -90,7 +92,7 @@ public class UsersController {
                     password = BCryptHelper.encrypt(password);
                 }
                 
-                userJDBCTemplate.update(username, password, email, in_enabled, roles);
+                userJDBCTemplate.update(username, password, email, in_enabled, roles, budget, teamName);
                 map.put("message", "User successfully updated!");
                 
           } catch (UserNotFoundException ex) {
@@ -123,7 +125,8 @@ public class UsersController {
     }
     @RequestMapping(value="/admin/users/add", method=RequestMethod.POST)
     public String handleRegistration (@RequestParam String username,@RequestParam String password,
-            @RequestParam String email, @RequestParam(value = "admin", required = false) String admin, 
+            @RequestParam String email,@RequestParam int budget, @RequestParam String teamName, 
+            @RequestParam(value = "admin", required = false) String admin, 
             @RequestParam(value = "user", required = false)  String user, @RequestParam(value = "premium", required = false)  
                     String premium, ModelMap map)
     {
@@ -142,14 +145,17 @@ public class UsersController {
                     roles.add(UserRole.PREMIUM);
                 }
                 
-                userJDBCTemplate.create(username, password, email, 1, roles);
+                userJDBCTemplate.create(username, password, email, 1, roles, budget, teamName);
                 map.put("message", "User successfully registered!");
                 return "redirect:/admin/users";
                 
           } catch (UserAlreadyExistsException ex) {
-              map.put("message", "Username already taken!");
-              return "adduser";
-          }
+                map.put("message", "Username already taken!");
+                return "adduser";
+          } catch (TeamNameAlreadyExists ex) {
+                map.put("message", "Team name already exists!");
+                return "adduser";
+        }
 
           
     }

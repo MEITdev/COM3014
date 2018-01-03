@@ -31,6 +31,8 @@
                                         <th>Password</th>
 					<th>Email</th>
 					<th>Enabled</th>
+                                        <th>Budget</th>
+                                        <th>Team Name</th>
                                         <th>Is User</th>
                                         <th>Is Premium</th>
                                         <th>Is Admin</th>
@@ -46,6 +48,8 @@
 						<td>${user.password}</td>
 						<td>${user.email}</td>
                                                 <td>${user.enabled}</td>
+                                                <td>${user.budget}</td>
+                                                <td>${user.teamName}</td>
                                                 <td>${user.roleStringHolder.isUser}</td>
                                                 <td>${user.roleStringHolder.isPremium}</td>
                                                 <td>${user.roleStringHolder.isAdmin}</td>
