@@ -64,6 +64,26 @@ public class WelcomeController
     
   }
   
+  @RequestMapping(value="/team", method=RequestMethod.GET)
+    public String viewTeamRosterPage (ModelMap model, Principal principal)
+    {
+        if(     SecurityContextHolder.getContext().getAuthentication() != null &&
+            SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+            !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
+        try {
+            model.put("principal", principal);
+            User currentUser = userJDBCTemplate.getUser(principal.getName());
+            model.put("user", currentUser);
+            model.put("players", getPlayers(currentUser));
+            
+            return "team_roster";
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+        return "login";
+    }
   
     public ArrayList<Player> getPlayers(User user){
         ArrayList<Player> players = new ArrayList<>();

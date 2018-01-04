@@ -12,6 +12,7 @@ import com.group9.generic.BCryptHelper;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,8 +48,7 @@ public class UsersController {
         return "listusers";
     }
     
-    
-    
+   
     
     //UPDATES
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.GET)
