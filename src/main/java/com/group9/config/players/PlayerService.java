@@ -6,23 +6,28 @@
 package com.group9.config.players;
 
  
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.annotation.Secured;
  
 
  
 public interface PlayerService {
-    @Secured ({"ROLE_ADMIN", "ROLE_USER", "ROLE_PREMIUM"})
+    
     Player findById(int id);
-    @Secured ({"ROLE_ADMIN", "ROLE_PREMIUM"})
+    
     void savePlayer(Player player);
-    @Secured ({"ROLE_ADMIN", "ROLE_USER", "ROLE_PREMIUM"})
+    
+    void getUpdatePlayer(Player player);
+    
     void updatePlayer(Player player);
-    @Secured ({"ROLE_ADMIN"}) 
+    
     void deletePlayerById(int id);
-    @Secured ({"ROLE_ADMIN", "ROLE_USER", "ROLE_PREMIUM"})
+    
     List<Player> findAllPlayers(); 
      
+    
+    ArrayList<Player> generateRandomPlayers(int numberOfPlayers);
     
  
     boolean isPlayerIDUnique(int id);

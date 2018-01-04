@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  
 
  
-@Repository("employeeDao")
+@Repository("playerDAO")
 public class PlayerDAOImpl extends AbstractDao<Integer, Player> implements PlayerDAO {
  
     @Override
@@ -52,4 +52,9 @@ public class PlayerDAOImpl extends AbstractDao<Integer, Player> implements Playe
         return (Player) criteria.uniqueResult();
     }
     */
+
+    @Override
+    public void updatePlayer(Player player) {
+        update(player);
+    }
 }

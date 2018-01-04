@@ -1,6 +1,13 @@
 package com.group9.login;
 
+import com.group9.config.players.Player;
+import com.group9.config.players.PlayerService;
+import com.group9.config.teams.Team;
+import com.group9.config.teams.TeamService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class User {
@@ -12,6 +19,8 @@ public class User {
    private RoleHolder roleStringHolder;
    private int budget;
    private String teamName;
+   
+     
    
     public RoleHolder getRoleStringHolder() {
         return roleStringHolder;
@@ -75,6 +84,7 @@ public class User {
     }
 
     public void setTeamName(String teamName) {
+        System.out.println("SETTING TEAM NAME "+teamName);
         this.teamName = teamName;
     }
 

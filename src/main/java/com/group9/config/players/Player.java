@@ -74,7 +74,10 @@ public class Player implements Serializable {
     @Column(name = "DEFENSE", nullable = false)
     private int defense;
     
-    
+
+    @Digits(integer=1, fraction=0)
+    @Column(name = "INTEAM", nullable = false)
+    private int inTeam;
     
 
     
@@ -136,6 +139,14 @@ public class Player implements Serializable {
 
     public void setOffense(int offense) {
         this.offense = offense;
+    }
+
+    public int getInTeam() {
+        return inTeam;
+    }
+
+    public void setInTeam(int inTeam) {
+        this.inTeam = inTeam;
     }
     
   

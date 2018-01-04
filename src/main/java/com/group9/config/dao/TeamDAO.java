@@ -5,7 +5,8 @@
  */
 package com.group9.config.dao;
 
-import com.group9.config.players.Player;
+
+import com.group9.config.teams.Team;
 import java.util.List;
 
 
@@ -14,17 +15,16 @@ import java.util.List;
  * @author Black
  */
 
-public interface PlayerDAO {
+public interface TeamDAO {
  
-    Player findById(int id);
+    Team findByName(String name);
  
-    void savePlayer(Player player);
+    void saveTeam(Team team);
      
-    void deletePlayerById(int id);
+    void deleteTeam(String name);
      
-    List<Player> getAllPlayers();
+    List<Team> getAllTeams();
  
-    void updatePlayer(Player player);
     
  
 }

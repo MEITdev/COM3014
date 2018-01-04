@@ -10,6 +10,10 @@ package com.group9.login;
  * @author Black
  */
 import com.group9.config.dao.UserDAO;
+import com.group9.config.players.Player;
+import com.group9.config.players.PlayerService;
+import com.group9.config.teams.Team;
+import com.group9.config.teams.TeamService;
 import com.group9.exceptions.RoleNotRecognised;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.generic.BCryptHelper;
@@ -19,11 +23,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.GenericHelper;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 
@@ -31,6 +37,11 @@ public class UserJDBCTemplate implements UserDAO {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
    
+    @Autowired
+    TeamService teamService;
+    
+    @Autowired
+    PlayerService playerService;
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -41,14 +52,42 @@ public class UserJDBCTemplate implements UserDAO {
     @Override
     public void create(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserAlreadyExistsException , TeamNameAlreadyExists {
         
+        if(!teamService.hasTeamUniqueName(teamName)){
+            throw new TeamNameAlreadyExists("Team already exists!");
+        }
+        
+        
+        
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
         int count = jdbcTemplateObject.queryForObject(SQL, new Object[] { username }, Integer.class);
         
         if(count != 0){
             throw new UserAlreadyExistsException("User "+username+" already exists in the database");
         }else{
-            SQL = "insert into users (username, password, email, enabled) values (?, ?, ?, ?)";
-            jdbcTemplateObject.update( SQL, username, BCryptHelper.encrypt(password), email, 1);
+            
+            ArrayList<Player> players =  playerService.generateRandomPlayers(6);
+            
+            for(Player player: players){
+                player.setInTeam(1);
+                playerService.updatePlayer(player);
+            }
+            
+            Team team = new Team();
+            team.setName(teamName);
+            team.setWins(0);
+            team.setLosses(0);
+            team.setOwner(username);
+            team.setPlayer1ID(players.get(0).getId());
+            team.setPlayer2ID(players.get(1).getId());
+            team.setPlayer3ID(players.get(2).getId());
+            team.setPlayer4ID(players.get(3).getId());
+            team.setPlayer5ID(players.get(4).getId());
+            team.setPlayer6ID(players.get(5).getId());
+            teamService.saveTeam(team);
+            
+            
+            SQL = "insert into users (username, password, email, enabled, budget, teamName) values (?, ?, ?, ?, ?, ?)";
+            jdbcTemplateObject.update( SQL, username, BCryptHelper.encrypt(password), email, 1, budget, teamName);
             
             Iterator<UserRole> iterator = roles.iterator();
             while(iterator.hasNext()) {
