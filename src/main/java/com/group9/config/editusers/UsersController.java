@@ -5,13 +5,19 @@
  */
 package com.group9.config.editusers;
 
+import com.group9.config.players.Player;
+import com.group9.config.players.PlayerService;
+import com.group9.config.teams.Team;
+import com.group9.config.teams.TeamService;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.BCryptHelper;
+import com.group9.index.WelcomeController;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +25,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +46,12 @@ public class UsersController {
     @Autowired
     private UserJDBCTemplate userJDBCTemplate;
     
+    @Autowired
+    TeamService teamService;
+     
+    @Autowired
+    PlayerService playerService;
+    
     @RequestMapping(value="/admin/users", method=RequestMethod.GET)
     public String viewRegistrationPage (ModelMap map)
     {
@@ -46,7 +60,40 @@ public class UsersController {
         return "listusers";
     }
     
+    @RequestMapping(value="/team", method=RequestMethod.GET)
+    public String viewTeamRosterPage (ModelMap model, Principal principal)
+    {
+        if(     SecurityContextHolder.getContext().getAuthentication() != null &&
+            SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+            !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
+        try {
+            model.put("principal", principal);
+            User currentUser = userJDBCTemplate.getUser(principal.getName());
+            model.put("user", currentUser);
+            model.put("players", getPlayers(currentUser));
+            
+            return "team_roster";
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+        return "index";
+    }
     
+    public ArrayList<Player> getPlayers(User user){
+        ArrayList<Player> players = new ArrayList<>();
+        
+        Team t = teamService.findByName(user.getTeamName());
+        players.add(playerService.findById(t.getPlayer1ID()));
+        players.add(playerService.findById(t.getPlayer2ID()));
+        players.add(playerService.findById(t.getPlayer3ID()));
+        players.add(playerService.findById(t.getPlayer4ID()));
+        players.add(playerService.findById(t.getPlayer5ID()));
+        players.add(playerService.findById(t.getPlayer6ID()));
+                
+        return players;
+    }
     
     
     //UPDATES
