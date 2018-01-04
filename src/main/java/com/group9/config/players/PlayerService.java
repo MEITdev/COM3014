@@ -6,6 +6,7 @@
 package com.group9.config.players;
 
  
+import com.group9.login.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.annotation.Secured;
@@ -31,5 +32,6 @@ public interface PlayerService {
     
  
     boolean isPlayerIDUnique(int id);
+    ArrayList<Player> getPlayers(User user);
      
 }

@@ -6,20 +6,29 @@
 package com.group9.config.players;
 
 
+import com.group9.exceptions.UserNotFoundException;
+import com.group9.generic.GenericHelper;
+import com.group9.login.User;
+import com.group9.login.UserJDBCTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
  
 import javax.validation.Valid;
  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -43,6 +52,8 @@ public class PlayerController {
     @Autowired
     MessageSource messageSource;
  
+      @Autowired
+    private UserJDBCTemplate userJDBCTemplate;
    
     @GetMapping("players")
     public String listPlayers(ModelMap model) {
@@ -58,7 +69,91 @@ public class PlayerController {
         model.addAttribute("player", player);
         return "viewplayer";
     }
+    
+    //UPGRADES
+    @GetMapping("/players/{id}/upgrade/")
+    public String getPlayerUpgrade(ModelMap model, @PathVariable int id, Principal principal) {
+        Player playerout = service.findById(id);
+        model.addAttribute("player", playerout);
+        model.addAttribute("pricedef", GenericHelper.calculateCost(playerout.getDefense()));
+        model.addAttribute("priceoff", GenericHelper.calculateCost(playerout.getOffense()));
+        
+        
+        User user;
+        try {
+            user = userJDBCTemplate.getUser(principal.getName());
+            model.addAttribute("budget", user.getBudget());
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "upgradeplayer";
+      
+    }
+    
+    @RequestMapping(value = { "/players/{id}/upgrade/" }, method = RequestMethod.POST)
+    public String upgradePlayer(@RequestParam String type, @PathVariable int id, 
+            ModelMap model, Principal principal) {
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null &&
+            SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+            !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
+            try {
+                Player player = service.findById(id);
+                int ugpradeLevel = 0;
+                
+                if(type.contentEquals("def")){
+                    ugpradeLevel = player.getDefense();
+                    player.setDefense(Math.min(99, player.getDefense()+3));
+                    
+                } else if(type.contentEquals("off")){
+                    ugpradeLevel = player.getOffense();
+                    player.setOffense(Math.min(99, player.getOffense()+3));
+                }
+
+
+                User user = userJDBCTemplate.getUser(principal.getName());
+                
+                
+                model.addAttribute("budget", user.getBudget());
+                
+                
+                int cost = GenericHelper.calculateCost(ugpradeLevel);
+                if(user != null && user.getBudget() > cost){
+                    if(GenericHelper.isPlayerInList(service.getPlayers(user), player)){
+                        userJDBCTemplate.updateBudget(user.getUsername(), user.getBudget()-cost);
+                        service.updatePlayer(player);
+                        model.put("message", "Player has been upgraded");
+                    }else{
+                        //PLAYER WANTS TO CHEAT and edit user he does not own
+                        model.put("message", "Please do not cheat, you can only edit players you own");
+                    }
+                
+                }else{
+                    //Either user does not exist or does not have enough cash
+                    if(user == null){
+                        model.put("message", "User could not be found");
+                    }else{
+                        model.put("message", "You do not have enough budget to upgrade this player");
+                    }
+                }
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        Player playerout = service.findById(id);
+        model.addAttribute("player", playerout);
+        
+        model.addAttribute("pricedef", GenericHelper.calculateCost(playerout.getDefense()));
+        model.addAttribute("priceoff", GenericHelper.calculateCost(playerout.getOffense()));
+        return "upgradeplayer";
+      
+
+    }
  
+    
     
     @GetMapping("/new")
     public String newPlayer(ModelMap model) {

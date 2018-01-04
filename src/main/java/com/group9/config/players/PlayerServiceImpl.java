@@ -6,6 +6,9 @@
 package com.group9.config.players;
 
 import com.group9.config.dao.PlayerDAO;
+import com.group9.config.teams.Team;
+import com.group9.config.teams.TeamService;
+import com.group9.login.User;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +30,9 @@ public class PlayerServiceImpl implements PlayerService {
  
     @Autowired
     private PlayerDAO dao;
+    
+    @Autowired
+    TeamService teamService;
      
     @Override
     public Player findById(int id) {
@@ -111,6 +117,20 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void updatePlayer(Player player) {
         dao.updatePlayer(player);
+    }
+    @Override
+    public ArrayList<Player> getPlayers(User user){
+        ArrayList<Player> players = new ArrayList<>();
+        
+        Team t = teamService.findByName(user.getTeamName());
+        players.add(findById(t.getPlayer1ID()));
+        players.add(findById(t.getPlayer2ID()));
+        players.add(findById(t.getPlayer3ID()));
+        players.add(findById(t.getPlayer4ID()));
+        players.add(findById(t.getPlayer5ID()));
+        players.add(findById(t.getPlayer6ID()));
+                
+        return players;
     }
      
 }
