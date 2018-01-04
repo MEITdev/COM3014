@@ -156,7 +156,13 @@ public class UserJDBCTemplate implements UserDAO {
             jdbcTemplateObject.update(SQL, username);
         }
     }
-
+    
+    @Override 
+    public void updateBudget(String username, int budget){
+        String SQL = "update users set budget = ? where username = ?";
+        jdbcTemplateObject.update(SQL,budget, username);
+    }
+    
     @Override
     public void update(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserNotFoundException {
 
