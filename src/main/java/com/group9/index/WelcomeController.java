@@ -75,6 +75,7 @@ public class WelcomeController
             User currentUser = userJDBCTemplate.getUser(principal.getName());
             model.put("user", currentUser);
             model.put("players", getPlayers(currentUser));
+            model.put("freePlayers", playerService.getFreePlayers());
             
             return "team_roster";
         } catch (UserNotFoundException ex) {

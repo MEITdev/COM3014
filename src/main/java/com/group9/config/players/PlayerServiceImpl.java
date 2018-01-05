@@ -132,5 +132,20 @@ public class PlayerServiceImpl implements PlayerService {
                 
         return players;
     }
-     
+    
+    @Override
+    public ArrayList<Player> getFreePlayers(){
+        ArrayList<Player> freePlayers = new ArrayList<>();
+        
+        for(Player player: findAllPlayers()){
+            if(player.getInTeam() == 0){
+                freePlayers.add(player);
+            }
+        }
+        return freePlayers;
+    
+    }
+    
+    
+    
 }

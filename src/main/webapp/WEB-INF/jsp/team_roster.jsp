@@ -62,7 +62,13 @@
                                             <div>
                                                  ${param.message}.
                                             </div>
+                                            
                                         </c:if>  
+                                            <%-- 
+                                            <c:forEach items="${freePlayers}" var="freeplayer">
+                                                    ${freeplayer.forename}<br>
+                                            </c:forEach>
+                                            --%>
                                             <c:forEach items="${players}" var="player">
                                                 
                                             <c:url value="/players/${player.id}/upgrade/" var="updatePlayer" />                                               

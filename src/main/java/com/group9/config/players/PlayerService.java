@@ -30,8 +30,10 @@ public interface PlayerService {
     
     ArrayList<Player> generateRandomPlayers(int numberOfPlayers);
     
+    public ArrayList<Player> getFreePlayers();
  
     boolean isPlayerIDUnique(int id);
     ArrayList<Player> getPlayers(User user);
+    
      
 }
