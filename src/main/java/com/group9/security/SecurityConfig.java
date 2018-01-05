@@ -52,7 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .formLogin().successHandler(new RefererRedirectionAuthenticationSuccessHandler())
                 .loginPage("/login").and().
                 
-            httpBasic();
+            httpBasic().and().requiresChannel().anyRequest().requiresSecure();
+        
+        
+        
 
   }
 }

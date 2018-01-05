@@ -91,6 +91,9 @@ public class PlayerController {
       
     }
     
+    //Switch
+    
+    
     @RequestMapping(value = { "/players/{id}/upgrade/" }, method = RequestMethod.POST)
     public String upgradePlayer(@RequestParam String type, @PathVariable int id, 
             ModelMap model, Principal principal) {
