@@ -1,33 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Footballs</title>
-        
-        <!-- Bootstrap -->
-        <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="resources/css/font-awesome.css" rel="stylesheet">
-        <!-- NProgress -->
-        <link href="resources/css/nprogress.css" rel="stylesheet">
-        <!-- iCheck -->
-        <link href="resources/css/green.css" rel="stylesheet">
-
-        <!-- bootstrap-progressbar -->
-        <link href="resources/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-        <!-- JQVMap -->
-        <link href="resources/css/jqvmap.min.css" rel="stylesheet"/>
-
-        <!-- Custom Theme Style -->
-        <link href="resources/css/custom.min.css" rel="stylesheet">
-    </head>
+<%@ include file="/WEB-INF/jspf/header.jspf"%>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -71,16 +42,6 @@
                 <%@ include file="/WEB-INF/jspf/footer.jspf"%>
             </div>
         </div>
-                    
-        <!-- jQuery -->
-        <script src="resources/js/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <script src="resources/js/bootstrap.min.js"></script>
-        <!-- bootstrap-progressbar -->
-        <script src="resources/js/bootstrap-progressbar.min.js"></script>
-        <!-- Skycons -->
-        <script src="resources/js/skycons.js"></script>
-        <!-- Custom Theme Scripts -->
-        <script src="resources/js/custom.min.js"></script>
+            
     </body>
 </html>
