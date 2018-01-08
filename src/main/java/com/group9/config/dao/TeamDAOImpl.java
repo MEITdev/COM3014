@@ -9,6 +9,7 @@ package com.group9.config.dao;
  
 import com.group9.config.players.Player;
 import com.group9.config.teams.Team;
+import com.group9.login.User;
 import java.util.List;
  
 import org.hibernate.Criteria;
@@ -44,4 +45,5 @@ public class TeamDAOImpl extends AbstractDao<String, Team> implements TeamDAO {
         Criteria criteria = createEntityCriteria();
         return (List<Team>) criteria.list();
     }
+
 }

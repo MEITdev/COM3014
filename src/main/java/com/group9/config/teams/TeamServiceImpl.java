@@ -6,6 +6,7 @@
 package com.group9.config.teams;
 
 import com.group9.config.dao.TeamDAO;
+import com.group9.login.User;
 import java.util.List;
  
 import org.springframework.beans.factory.annotation.Autowired;

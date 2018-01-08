@@ -7,6 +7,7 @@ package com.group9.config.dao;
 
 
 import com.group9.config.teams.Team;
+import com.group9.login.User;
 import java.util.List;
 
 
@@ -24,7 +25,5 @@ public interface TeamDAO {
     void deleteTeam(String name);
      
     List<Team> getAllTeams();
- 
-    
  
 }

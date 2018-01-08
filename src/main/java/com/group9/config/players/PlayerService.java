@@ -33,6 +33,7 @@ public interface PlayerService {
     public ArrayList<Player> getFreePlayers();
  
     boolean isPlayerIDUnique(int id);
+    
     ArrayList<Player> getPlayers(User user);
     
      

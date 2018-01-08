@@ -57,4 +57,5 @@ public class PlayerDAOImpl extends AbstractDao<Integer, Player> implements Playe
     public void updatePlayer(Player player) {
         update(player);
     }
+
 }
