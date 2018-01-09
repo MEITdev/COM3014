@@ -41,11 +41,7 @@ public class UsersController {
     public String viewRegistrationPage (ModelMap map, Principal principal)
     {
         map.put("users", userJDBCTemplate.listUsers());
-        try {
-            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GenericHelper.handleUserInfo(map, principal, userJDBCTemplate);
         return "listusers";
     }
     
@@ -60,11 +56,8 @@ public class UsersController {
         } catch (UserNotFoundException ex) {
             map.put("error", "Could not find user "+username);
         }
-        try {
-            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GenericHelper.handleUserInfo(map, principal, userJDBCTemplate);
+        
         return "updateuser";
     }
     
@@ -107,6 +100,7 @@ public class UsersController {
           }
         try {
             map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            if( principal != null) {map.addAttribute("userbudget", userJDBCTemplate.getUser(principal.getName()).getBudget());}
         } catch (UserNotFoundException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -127,6 +121,7 @@ public class UsersController {
         } 
         try {
             map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            if( principal != null) {map.addAttribute("userbudget", userJDBCTemplate.getUser(principal.getName()).getBudget());}
         } catch (UserNotFoundException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -139,6 +134,7 @@ public class UsersController {
     {
         try {
             map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            if( principal != null) {map.addAttribute("userbudget", userJDBCTemplate.getUser(principal.getName()).getBudget());}
         } catch (UserNotFoundException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,6 +152,7 @@ public class UsersController {
     {
         try {
         map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        if( principal != null) {map.addAttribute("userbudget", userJDBCTemplate.getUser(principal.getName()).getBudget());}
         } catch (UserNotFoundException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }

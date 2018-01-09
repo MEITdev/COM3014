@@ -1,11 +1,19 @@
 package com.group9.generic;
 
+import com.group9.config.games.GameController;
 import com.group9.config.players.Player;
 import com.group9.exceptions.RoleNotRecognised;
+import com.group9.exceptions.UserNotFoundException;
+import com.group9.login.User;
+import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.ui.ModelMap;
 
 
 
@@ -77,6 +85,23 @@ public class GenericHelper {
             }
         }
         return false;
+    }
+    
+    
+    public static void handleUserInfo(ModelMap map, Principal principal, UserJDBCTemplate userJDBCTemplate){
+        if( principal != null) {
+            try {
+                User u = userJDBCTemplate.getUser(principal.getName());
+                map.addAttribute("isAdmin", (GenericHelper.isAdmin(u.getRoles())));
+                map.addAttribute("userbudget", u.getBudget());
+                map.addAttribute("principal", principal);
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(GenericHelper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        
     }
 }
     

@@ -72,11 +72,7 @@ public class GameController {
         }
 
         model.addAttribute("teams", teamsWithoutUser);
-        try {
-            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         return "allteams";
         
     }
@@ -85,18 +81,10 @@ public class GameController {
     public String standings(ModelMap model, Principal principal) {
 
         List<Team> teams = service.findAllTeams();       
+
+        model.addAttribute("teams", teams);
         
-        
-            
-        
-                 
-        model.addAttribute("teams", team);
-        
-        try {
-            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         
         return "standings";
     }
@@ -198,11 +186,7 @@ public class GameController {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        try {
-            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         
         return "gameResult";
     }

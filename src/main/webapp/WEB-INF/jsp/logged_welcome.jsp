@@ -34,17 +34,7 @@
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         
-                            <!-- sidebar profile quick info -->
-                            <div class="profile clearfix">
-                                <div class="profile_pic">
-                                    <img src="resources/img/user.png" alt="..." class="img-circle profile_img">
-                                </div>
-                                <div class="profile_info">
-                                    <span>Welcome,</span>
-                                    <h2>${principal.name}</h2>
-                                </div>
-                            </div>
-                            <!-- /sidebar profile quick info -->
+                            
 
                         <%@ include file="/WEB-INF/jspf/sidebar.jspf"%>
 

@@ -8,9 +8,26 @@
             <c:url value='/new' var="addPlayer" />
             <c:url value='/game' var="gamePage" />
             <c:url value='/standings' var="standingsPage" />
+            <c:url value='/resources/img/user.png' var="imageRes" />
             
+            
+            <!-- sidebar profile quick info -->
+            <div class="profile clearfix">
+                <div class="profile_pic">
+                    <img src="${imageRes}" alt="..." class="img-circle profile_img">
+                </div>
+                <div class="profile_info">
+                    <span>Welcome,</span>
+                    <h2>${principal.name}</h2>
+                    <h2>${userbudget}$</h2>
+                </div>
+            </div>
+            <!-- /sidebar profile quick info -->
+                            
+                            
             <div class="navbar nav_title" style="border: 0;">
-              <a class="site_title"><i class="fa fa-futbol-o" aria-hidden="true"></i> <span>Footballs!</span></a>
+                <a class="site_title"><i class="fa fa-futbol-o" aria-hidden="true"></i> <span>Footballs!</span></a>
+                
             </div>
             
             <div class="clearfix"></div>
