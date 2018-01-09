@@ -38,6 +38,7 @@
         <link href="resources/css/profile-css/style.css" rel="stylesheet">
         <link href="resources/css/profile-css/blue.css" rel="stylesheet">
     </head>
+    
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">

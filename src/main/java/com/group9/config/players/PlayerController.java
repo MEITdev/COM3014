@@ -220,7 +220,7 @@ public class PlayerController {
  
     
     
-    @GetMapping("/new")
+    @GetMapping("/player/new")
     public String newPlayer(ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         
@@ -231,7 +231,7 @@ public class PlayerController {
     }
  
    
-    @RequestMapping(value = { "/new" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/player/new" }, method = RequestMethod.POST)
     public String savePlayer(@Valid Player player, BindingResult result,
             ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -249,45 +249,12 @@ public class PlayerController {
          
         service.savePlayer(player);
  
-        model.addAttribute("success", "Employee " + player.getForename()+ " registered successfully");
+        model.addAttribute("success", "Player " + player.getForename()+ " registered successfully");
         return "success";
     }
  
  
     
-    @RequestMapping(value = { "/edit-{id}-player" }, method = RequestMethod.GET)
-    public String editPlayer(@PathVariable int id, ModelMap model, Principal principal) {
-        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
-        
-        Player player = service.findById(id);
-        model.addAttribute("player", player);
-        model.addAttribute("edit", true);
-        return "reg_player";
-    }
-     
-    
-    @RequestMapping(value = { "/edit-{ssn}-player" }, method = RequestMethod.POST)
-    public String updadtePlayer(@Valid Player player, BindingResult result,
-            ModelMap model, @PathVariable String ssn, Principal principal) {
-        
-        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
- 
-        if (result.hasErrors()) {
-            return "reg_player";
-        }
- 
-        if(!service.isPlayerIDUnique(player.getId())){
-            //FieldError ssnError =new FieldError("employee","ssn",messageSource.getMessage("non.unique.ssn", new String[]{employee.getSsn()}, Locale.getDefault()));
-            //result.addError(ssnError);
-            return "reg_player";
-        }
- 
-        service.getUpdatePlayer(player);
- 
-        model.addAttribute("success", "Player " + player.getForename()+ " updated successfully");
-        return "success";
-    }
- 
      
     @DeleteMapping("player/delete")
     public String deletePlayer(@RequestParam int id, Principal principal, ModelMap model) {

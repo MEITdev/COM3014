@@ -6,6 +6,7 @@
 package com.group9.config.editusers;
 
 import com.group9.config.games.GameController;
+import com.group9.config.teams.TeamService;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;
@@ -36,6 +37,9 @@ public class UsersController {
     
     @Autowired
     private UserJDBCTemplate userJDBCTemplate;
+    
+    @Autowired
+    TeamService teamService;
     
     @RequestMapping(value="/admin/users", method=RequestMethod.GET)
     public String viewRegistrationPage (ModelMap map, Principal principal)
@@ -112,7 +116,9 @@ public class UsersController {
     public String deleteUser (@RequestParam String username, ModelMap map, Principal principal)
     {
         try {
+            teamService.deleteTeam(userJDBCTemplate.getUser(username).getTeamName());
             userJDBCTemplate.delete(username);
+            
             map.put("message", "User has been deleted");
             
         } catch (UserNotFoundException ex) {
