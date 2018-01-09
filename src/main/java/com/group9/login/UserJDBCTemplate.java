@@ -35,13 +35,28 @@ public class UserJDBCTemplate implements UserDAO {
     
     @Autowired
     PlayerService playerService;
-
+    /**
+     * Connect it to database
+     * @param ds 
+     */
     @Override
     public void setDataSource(DataSource ds) {
         this.dataSource = ds;
         this.jdbcTemplateObject = new JdbcTemplate(dataSource);
     }
-
+    
+    /**
+     * Create specific user
+     * @param username
+     * @param password
+     * @param email
+     * @param enabled
+     * @param roles
+     * @param budget
+     * @param teamName
+     * @throws UserAlreadyExistsException
+     * @throws TeamNameAlreadyExists 
+     */
     @Override
     public void create(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserAlreadyExistsException , TeamNameAlreadyExists {
         
@@ -94,7 +109,13 @@ public class UserJDBCTemplate implements UserDAO {
         }
         
     }
-
+    
+    /**
+     * Get specific user from the database or raise exception
+     * @param username
+     * @return
+     * @throws UserNotFoundException 
+     */
     @Override
     public User getUser(String username) throws UserNotFoundException{
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
@@ -109,7 +130,10 @@ public class UserJDBCTemplate implements UserDAO {
             return user;
         }
     }
-    
+    /**
+     * Add roles to a user  based on this database records
+     * @param user 
+     */
     public void addUserRoles(User user){
         String SQL = "select authority from authorities where username = ?";
         List<String> auths = jdbcTemplateObject.queryForList(SQL, new Object[] {user.getUsername()}, String.class);
@@ -124,7 +148,10 @@ public class UserJDBCTemplate implements UserDAO {
         user.setRoles(roles);
     
     }
-    
+    /**
+     * Returns list of all users in the database
+     * @return 
+     */
     @Override
     public List<User> listUsers() {
         String SQL = "select * from users";
@@ -136,7 +163,11 @@ public class UserJDBCTemplate implements UserDAO {
         
         return users;
     }
-
+    /**
+     * Deletes user with ceratin username from the database
+     * @param username
+     * @throws UserNotFoundException 
+     */
     @Override
     public void delete(String username) throws UserNotFoundException {
         String SQL = "SELECT count(*) FROM users WHERE username = ?";
@@ -149,13 +180,28 @@ public class UserJDBCTemplate implements UserDAO {
             jdbcTemplateObject.update(SQL, username);
         }
     }
-    
+    /**
+     * Updates a budget for a specific user
+     * @param username
+     * @param budget 
+     */
     @Override 
     public void updateBudget(String username, int budget){
         String SQL = "update users set budget = ? where username = ?";
         jdbcTemplateObject.update(SQL,budget, username);
     }
     
+    /**
+     * Updates a specific user with updated values
+     * @param username
+     * @param password
+     * @param email
+     * @param enabled
+     * @param roles
+     * @param budget
+     * @param teamName
+     * @throws UserNotFoundException 
+     */
     @Override
     public void update(String username, String password, String email, int enabled, Set<UserRole> roles, int budget, String teamName) throws UserNotFoundException {
 

@@ -47,7 +47,14 @@ public class UsersController {
     
    
     
-    //UPDATES
+    /**
+     * Returns a update form to enable admin to update a user. 
+     * pre-populate fields with user information
+     * @param username
+     * @param map
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.GET)
     public String viewUpdatePage (@PathVariable("username") String username, ModelMap map, Principal principal)
     {
@@ -60,7 +67,21 @@ public class UsersController {
         
         return "updateuser";
     }
-    
+    /**
+     * Update values for a user
+     * @param username
+     * @param password
+     * @param email
+     * @param budget
+     * @param teamName
+     * @param principal
+     * @param admin
+     * @param user
+     * @param enabled
+     * @param premium
+     * @param map
+     * @return 
+     */
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.POST)
     public String updateUser (@RequestParam String username,@RequestParam String password,
             @RequestParam String email, @RequestParam int budget, @RequestParam String teamName, Principal principal,
@@ -107,7 +128,14 @@ public class UsersController {
         return "redirect:/admin/users";
     }
     
-    //DELETE
+    
+    /**
+     * Handle admin deletion of user
+     * @param username
+     * @param map
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value="/admin/users/delete", method=RequestMethod.POST)
     public String deleteUser (@RequestParam String username, ModelMap map, Principal principal)
     {
@@ -131,6 +159,12 @@ public class UsersController {
     }
     
     //ADDING USERS
+    /**
+     * Handle admin addition of a user
+     * @param map
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value="/admin/users/add", method=RequestMethod.GET)
     public String viewAddUsersPage (ModelMap map, Principal principal)
     {
@@ -144,7 +178,20 @@ public class UsersController {
     }
     
  
-    
+    /**
+     * Handle registration of user
+     * @param username
+     * @param password
+     * @param email
+     * @param budget
+     * @param teamName
+     * @param admin
+     * @param user
+     * @param premium
+     * @param map
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value="/admin/users/add", method=RequestMethod.POST)
     public String handleRegistration (@RequestParam String username,@RequestParam String password,
             @RequestParam String email,@RequestParam int budget, @RequestParam String teamName, 
