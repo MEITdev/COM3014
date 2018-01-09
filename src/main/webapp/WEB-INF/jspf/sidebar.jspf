@@ -63,10 +63,10 @@
                       <li><a href="${standingsPage}">Standings</a></li>
                     </ul>
                   </li>
-                  <li>
+                  <li class="container-fluid center nav-item">
                     <core:url value="/logout" var="logouturl" />
                     <form action="${logouturl}" method="post">
-                        <input type="submit" value="Logout"/>
+                        <input type="submit" value="Logout" class="btn"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>   
                     </form>         
                   </li>
