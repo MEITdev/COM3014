@@ -6,11 +6,14 @@
 package com.group9.index;
 
 
+import com.group9.config.games.GameController;
 import com.group9.config.players.Player;
 import com.group9.config.players.PlayerService;
 import com.group9.config.teams.Team;
 import com.group9.config.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
+import com.group9.generic.GenericHelper;
+import com.group9.generic.Registry;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import java.security.Principal;
@@ -45,7 +48,11 @@ public class WelcomeController
 @RequestMapping(value="/", method=RequestMethod.GET)
   public String welcomePage (ModelMap model, Principal principal)
   {
-
+            try {
+                model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
     if(     SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
@@ -67,6 +74,15 @@ public class WelcomeController
   @RequestMapping(value="/team", method=RequestMethod.GET)
     public String viewTeamRosterPage (ModelMap model, Principal principal)
     {
+        try {
+                model.addAttribute("isAdmin", (principal != null && (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+                model.addAttribute("isPremium", (principal != null && (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+                model.addAttribute("hasEnough", (principal != null && userJDBCTemplate.getUser(principal.getName()).getBudget() > Registry.lootBoxPrice));
+                model.addAttribute("lootboxPrice", Registry.lootBoxPrice);
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         if(     SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){

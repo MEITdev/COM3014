@@ -25,5 +25,6 @@ public interface TeamDAO {
     void deleteTeam(String name);
      
     List<Team> getAllTeams();
+    public void updateTeam(Team team);
  
 }

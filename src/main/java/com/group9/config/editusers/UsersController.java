@@ -5,25 +5,22 @@
  */
 package com.group9.config.editusers;
 
+import com.group9.config.games.GameController;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.BCryptHelper;
-import com.group9.login.User;
+import com.group9.generic.GenericHelper;
 import com.group9.login.UserJDBCTemplate;
 import com.group9.login.UserRole;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,10 +38,14 @@ public class UsersController {
     private UserJDBCTemplate userJDBCTemplate;
     
     @RequestMapping(value="/admin/users", method=RequestMethod.GET)
-    public String viewRegistrationPage (ModelMap map)
+    public String viewRegistrationPage (ModelMap map, Principal principal)
     {
         map.put("users", userJDBCTemplate.listUsers());
-        
+        try {
+            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "listusers";
     }
     
@@ -52,19 +53,24 @@ public class UsersController {
     
     //UPDATES
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.GET)
-    public String viewUpdatePage (@PathVariable("username") String username, ModelMap map)
+    public String viewUpdatePage (@PathVariable("username") String username, ModelMap map, Principal principal)
     {
         try {
             map.put("user", userJDBCTemplate.getUser(username));
         } catch (UserNotFoundException ex) {
             map.put("error", "Could not find user "+username);
         }
+        try {
+            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "updateuser";
     }
     
     @RequestMapping(value="/admin/users/{username}/update", method=RequestMethod.POST)
     public String updateUser (@RequestParam String username,@RequestParam String password,
-            @RequestParam String email, @RequestParam int budget, @RequestParam String teamName, 
+            @RequestParam String email, @RequestParam int budget, @RequestParam String teamName, Principal principal,
             @RequestParam(value = "admin", required = false) String admin, 
             @RequestParam(value = "user", required = false)     String user,
             @RequestParam(value = "enabled", required = false)  String enabled,
@@ -99,13 +105,17 @@ public class UsersController {
           } catch (UserNotFoundException ex) {
               map.put("message", "Failed updating user, user no longer exists!");
           }
-        
+        try {
+            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "redirect:/admin/users";
     }
     
     //DELETE
     @RequestMapping(value="/admin/users/delete", method=RequestMethod.POST)
-    public String deleteUser (@RequestParam String username, ModelMap map)
+    public String deleteUser (@RequestParam String username, ModelMap map, Principal principal)
     {
         try {
             userJDBCTemplate.delete(username);
@@ -115,22 +125,41 @@ public class UsersController {
             Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
             map.put("message", "User could not be delted");
         } 
+        try {
+            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "redirect:/admin/users";
     }
     
     //ADDING USERS
     @RequestMapping(value="/admin/users/add", method=RequestMethod.GET)
-    public String viewAddUsersPage (ModelMap map)
+    public String viewAddUsersPage (ModelMap map, Principal principal)
     {
+        try {
+            map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "adduser";
     }
+    
+ 
+    
     @RequestMapping(value="/admin/users/add", method=RequestMethod.POST)
     public String handleRegistration (@RequestParam String username,@RequestParam String password,
             @RequestParam String email,@RequestParam int budget, @RequestParam String teamName, 
             @RequestParam(value = "admin", required = false) String admin, 
             @RequestParam(value = "user", required = false)  String user, @RequestParam(value = "premium", required = false)  
-                    String premium, ModelMap map)
+                    String premium, ModelMap map, Principal principal)
     {
+        try {
+        map.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 
           try {
               
@@ -148,7 +177,7 @@ public class UsersController {
                 
                 userJDBCTemplate.create(username, password, email, 1, roles, budget, teamName);
                 map.put("message", "User successfully registered!");
-                return "redirect:/admin/users";
+                
                 
           } catch (UserAlreadyExistsException ex) {
                 map.put("message", "Username already taken!");
@@ -157,7 +186,7 @@ public class UsersController {
                 map.put("message", "Team name already exists!");
                 return "adduser";
         }
-
+        return "redirect:/admin/users";
           
     }
     

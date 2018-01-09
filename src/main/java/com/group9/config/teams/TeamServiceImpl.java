@@ -6,6 +6,7 @@
 package com.group9.config.teams;
 
 import com.group9.config.dao.TeamDAO;
+import com.group9.config.players.Player;
 import com.group9.login.User;
 import java.util.List;
  
@@ -31,6 +32,12 @@ public class TeamServiceImpl implements TeamService {
     public void saveTeam(Team team) {
         dao.saveTeam(team);
     }
+    
+    @Override
+    public void updatePostTeam(Team team) {
+        dao.updateTeam(team);
+    }
+   
 
     @Override
     public void updateTeam(Team team) {

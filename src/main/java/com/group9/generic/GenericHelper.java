@@ -4,6 +4,8 @@ import com.group9.config.players.Player;
 import com.group9.exceptions.RoleNotRecognised;
 import com.group9.login.UserRole;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 
@@ -58,6 +60,23 @@ public class GenericHelper {
             }
             return false;
             
+    }
+    
+    public static boolean isAdmin(Set<UserRole> role){
+        for(UserRole r : role){
+            if (r == UserRole.ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isPremium(Set<UserRole> role){
+        for(UserRole r : role){
+            if (r == UserRole.PREMIUM){
+                return true;
+            }
+        }
+        return false;
     }
 }
     

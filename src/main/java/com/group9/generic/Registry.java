@@ -18,4 +18,5 @@ public class Registry {
 
     public static int startingBudget = 1000000;
     public static int upgradeCost = 5000;
+    public static int lootBoxPrice = 3500;
 }

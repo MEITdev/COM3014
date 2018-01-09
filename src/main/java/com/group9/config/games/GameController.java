@@ -10,6 +10,7 @@ import com.group9.config.players.PlayerService;
 import com.group9.config.teams.Team;
 import com.group9.config.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
+import com.group9.generic.GenericHelper;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import java.security.Principal;
@@ -49,18 +50,54 @@ public class GameController {
     private UserJDBCTemplate userJDBCTemplate;
     
     @GetMapping("game")
-    public String listPlayers(ModelMap model) {
- 
+    public String listPlayers(ModelMap model, Principal principal) {
+
         List<Team> teams = service.findAllTeams();
-        model.addAttribute("teams", teams);
+        List<Team> teamsWithoutUser = new ArrayList<>();
+        
+        if(principal != null){
+
+            try {
+                String username = userJDBCTemplate.getUser(principal.getName()).getUsername();
+                for(Team t :teams){
+                    if(!username.contentEquals(t.getOwner())){
+                        teamsWithoutUser.add(t);
+                    }
+
+                }
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        model.addAttribute("teams", teamsWithoutUser);
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "allteams";
+        
     }
     
     @GetMapping("standings")
-    public String standings(ModelMap model) {
+    public String standings(ModelMap model, Principal principal) {
 
         List<Team> teams = service.findAllTeams();       
-        model.addAttribute("teams", teams);
+        
+        
+            
+        
+                 
+        model.addAttribute("teams", team);
+        
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return "standings";
     }
     
@@ -135,20 +172,34 @@ public class GameController {
             
             Team t1 = service.findByName(winningTeam);
             Team t2 = service.findByName(losingTeam);
-            int numberOfWins = t1.getWins();
-            int numberOfLosses = t2.getLosses();
+            
+            System.out.println("Winning team "+t1.getName()+" "+t1.getWins());
+            System.out.println("Loosing team "+t1.getName()+" "+t1.getLosses());
             
             // Increment the number of wins for the winning team
-            t1.setWins(numberOfWins++);
+            t1.setWins(t1.getWins()+1);
             
             // Increment the number of losses for the losing team
-            t2.setLosses(numberOfLosses++);
+            t2.setLosses(t2.getLosses()+1);
+            
+            
+            // Update database with current results
+            service.updatePostTeam(t1);
+            service.updatePostTeam(t2);
+            
+            
             
             model.addAttribute("winningTeam", winningTeam);
             model.addAttribute("losingTeam", losingTeam);
             model.addAttribute("winningTeamRes", winningTeamRes);
             model.addAttribute("losingTeamRes", losingTeamRes);    
             
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
         } catch (UserNotFoundException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }

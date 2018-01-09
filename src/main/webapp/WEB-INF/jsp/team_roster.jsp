@@ -29,7 +29,9 @@
         <link href="resources/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
         <!-- JQVMap -->
         <link href="resources/css/jqvmap.min.css" rel="stylesheet"/>
-
+        
+        <link href="resources/css/premium.css" rel="stylesheet"/>
+        
         <!-- Custom Theme Style -->
         <link href="resources/css/custom.min.css" rel="stylesheet">
         <!-- Player Profile Style -->
@@ -79,7 +81,38 @@
                                                     <div class="card-block">
                                                         <center class="m-t-30"> <img src="resources/img/user.png" class="img-circle" width="150" />
                                                             <h4 class="card-title m-t-10">${player.forename} ${player.surname}</h4>
-                                                            <h6 class="card-subtitle"><a href="${updatePlayer}"><b>Upgrade </b></a>|<a href="${switchPlayer}"><b> Switch</b></a></h6>
+                                                            <h6 class="card-subtitle"><a href="${updatePlayer}"><b>Upgrade </b></a>|
+                                                                
+                                                             
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                 <core:choose>
+                                                                    <core:when test="${isPremium != null && isPremium}">
+                                                                        <core:choose>
+                                                                            <core:when test="${hasEnough != null && hasEnough}">
+                                                                                <a href="#" data-toggle="popover" title="Premium" data-content="Get New Random Player - ${lootboxPrice}$ <a href='${switchPlayer}'><b> Buy</b></a>">Lootbox</a>
+                                                                            </core:when>    
+                                                                            <core:otherwise>
+                                                                                <a href="#" data-toggle="popover" title="Premium" data-content="Get New Random Player - ${lootboxPrice}$ <b> Not Enough Money</b>">Lootbox</a>
+                                                                            </core:otherwise>
+                                                                        </core:choose>
+
+                                                                    </core:when>    
+                                                                    <core:otherwise>
+                                                                       <a href="#" data-toggle="popover" title="Premium" data-content="Please upgrade to PREMIUM to use this feature">Lootbox</a>
+                                                                    </core:otherwise>
+                                                                </core:choose>
+                                                                        
+                                                                
+                                                                
+                                                                
+                                                                
+                                                            
+                                                            
+                                                            
+                                                            </h6>
                                                             <div class="row text-center justify-content-md-center">
                                                                 <div><font class="font-medium">Age: ${player.age}</font></div>
                                                                 <div><font class="font-medium">Salary: ${player.salary}</font></div>
@@ -110,5 +143,7 @@
         <script src="resources/js/skycons.js"></script>
         <!-- Custom Theme Scripts -->
         <script src="resources/js/custom.min.js"></script>
+        <!-- Custom Theme Scripts -->
+        <script src="resources/js/premium.js"></script>
     </body>
 </html>

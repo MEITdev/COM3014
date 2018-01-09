@@ -6,20 +6,17 @@
 package com.group9.config.players;
 
 
+import com.group9.config.games.GameController;
+import com.group9.config.teams.Team;
+import com.group9.config.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.GenericHelper;
+import com.group9.generic.Registry;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
  
@@ -48,6 +45,9 @@ public class PlayerController {
  
     @Autowired
     PlayerService service;
+    
+    @Autowired
+    TeamService teamService;
      
     @Autowired
     MessageSource messageSource;
@@ -56,23 +56,101 @@ public class PlayerController {
     private UserJDBCTemplate userJDBCTemplate;
    
     @GetMapping("players")
-    public String listPlayers(ModelMap model) {
- 
+    public String listPlayers(ModelMap model, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<Player> players = service.findAllPlayers();
         model.addAttribute("players", players);
         return "allplayers";
     }
     
     @GetMapping("player/{id}")
-    public String getPlayer(ModelMap model, @PathVariable int id) {
+    public String getPlayer(ModelMap model, @PathVariable int id, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         Player player = service.findById(id);
         model.addAttribute("player", player);
         return "viewplayer";
     }
     
+    @GetMapping("players/{id}/switch/")
+    public String switchPlayer(ModelMap model, @PathVariable int id, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null &&
+            SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+            !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
+                try {
+                    
+                    Player player = service.findById(id);
+                    
+                    User u = userJDBCTemplate.getUser(principal.getName());
+                    if(GenericHelper.isPlayerInList(service.getPlayers(u), player)){
+                        if(u.getBudget() > Registry.lootBoxPrice){
+                            u.setBudget(u.getBudget()-Registry.lootBoxPrice);
+                            userJDBCTemplate.updateBudget(u.getUsername(), u.getBudget());
+                            
+                            Team t = teamService.findByName(u.getTeamName());
+                            
+                            Player newPlayer = service.generateRandomPlayers(1).get(0);
+                            newPlayer.setInTeam(1);
+                            service.updatePlayer(newPlayer);
+                            
+                            player.setInTeam(0);
+                            service.updatePlayer(player);
+                            
+                            if(t.getPlayer1ID() == id){
+                                t.setPlayer1ID(newPlayer.getId());
+                            }else if(t.getPlayer2ID() == id){
+                                t.setPlayer2ID(newPlayer.getId());
+                            }else if(t.getPlayer3ID() == id){
+                                t.setPlayer3ID(newPlayer.getId());
+                            }else if(t.getPlayer4ID() == id){
+                                t.setPlayer4ID(newPlayer.getId());
+                            }else if(t.getPlayer5ID() == id){
+                                t.setPlayer5ID(newPlayer.getId());
+                            }else if(t.getPlayer6ID() == id){
+                                t.setPlayer6ID(newPlayer.getId());
+                            }
+                            teamService.updatePostTeam(t);
+                            model.put("message", "Congratulations! You have bought a lootpack!");
+                        }else{
+                            model.put("message", "Please do not cheat, you do not have enough money");
+                        }
+                        
+                    }else{
+                        model.put("message", "Please do not cheat, you can only edit players you own");
+                    }
+                    
+
+                } catch (UserNotFoundException ex) {
+                    Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }
+        
+        
+        return "redirect:/team";
+    }
+    
     //UPGRADES
     @GetMapping("/players/{id}/upgrade/")
     public String getPlayerUpgrade(ModelMap model, @PathVariable int id, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Player playerout = service.findById(id);
         model.addAttribute("player", playerout);
         model.addAttribute("pricedef", GenericHelper.calculateCost(playerout.getDefense()));
@@ -97,7 +175,11 @@ public class PlayerController {
     @RequestMapping(value = { "/players/{id}/upgrade/" }, method = RequestMethod.POST)
     public String upgradePlayer(@RequestParam String type, @PathVariable int id, 
             ModelMap model, Principal principal) {
-        
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
@@ -159,7 +241,13 @@ public class PlayerController {
     
     
     @GetMapping("/new")
-    public String newPlayer(ModelMap model) {
+    public String newPlayer(ModelMap model, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         Player player = new Player();
         model.addAttribute("player", player);
         model.addAttribute("edit", false);
@@ -169,7 +257,12 @@ public class PlayerController {
    
     @RequestMapping(value = { "/new" }, method = RequestMethod.POST)
     public String savePlayer(@Valid Player player, BindingResult result,
-            ModelMap model) {
+            ModelMap model, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
  
         if (result.hasErrors()) {
             return "reg_player";
@@ -191,7 +284,13 @@ public class PlayerController {
  
     
     @RequestMapping(value = { "/edit-{id}-player" }, method = RequestMethod.GET)
-    public String editPlayer(@PathVariable int id, ModelMap model) {
+    public String editPlayer(@PathVariable int id, ModelMap model, Principal principal) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         Player player = service.findById(id);
         model.addAttribute("player", player);
         model.addAttribute("edit", true);
@@ -201,7 +300,13 @@ public class PlayerController {
     
     @RequestMapping(value = { "/edit-{ssn}-player" }, method = RequestMethod.POST)
     public String updadtePlayer(@Valid Player player, BindingResult result,
-            ModelMap model, @PathVariable String ssn) {
+            ModelMap model, @PathVariable String ssn, Principal principal) {
+        
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
  
         if (result.hasErrors()) {
             return "reg_player";
@@ -215,19 +320,32 @@ public class PlayerController {
  
         service.getUpdatePlayer(player);
  
-        model.addAttribute("success", "Employee " + player.getForename()+ " updated successfully");
+        model.addAttribute("success", "Player " + player.getForename()+ " updated successfully");
         return "success";
     }
  
      
     @DeleteMapping("player/delete")
-    public String deletePlayer(@RequestParam int id) {
+    public String deletePlayer(@RequestParam int id, Principal principal, ModelMap model) {
+        try {
+            model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         service.deletePlayerById(id);
         return "redirect:/players";
     }
     
     @RequestMapping(value = { "/new/random/{number}" }, method = RequestMethod.GET)
-       public String generatePlayer(@PathVariable int number, ModelMap model) {
+       public String generatePlayer(@PathVariable int number, ModelMap model, Principal principal) {
+           
+           try {
+                model.addAttribute("isAdmin", ( principal != null &&  (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
            service.generateRandomPlayers(number);
            
            //model.addAttribute("success", "Employee " + player.getForename()+ " registered successfully");

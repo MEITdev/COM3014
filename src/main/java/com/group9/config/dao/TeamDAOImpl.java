@@ -22,6 +22,14 @@ import org.springframework.stereotype.Repository;
 @Repository("teamDAO")
 public class TeamDAOImpl extends AbstractDao<String, Team> implements TeamDAO {
  
+    
+    @Override
+    public void updateTeam(Team team) {
+        
+        update(team);
+    }
+    
+    
     @Override
     public Team findByName(String name) {
         return getByKey(name);

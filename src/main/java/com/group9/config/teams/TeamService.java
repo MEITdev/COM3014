@@ -7,7 +7,6 @@ package com.group9.config.teams;
 
  
 
-import com.group9.login.User;
 import java.util.List;
 
  
@@ -20,11 +19,14 @@ public interface TeamService {
     void saveTeam(Team team);
     
     void updateTeam(Team team);
+    void updatePostTeam(Team team);
     
     void deleteTeam(String name);
     
     List<Team> findAllTeams(); 
  
     boolean hasTeamUniqueName(String Name);
+    
+
      
 }
