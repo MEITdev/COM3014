@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.config;
 
 
@@ -28,7 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({ "com.group9.springmvc.configuration" })
 @PropertySource(value = { "classpath:config/application.properties" })
 public class HibernateConfiguration {
- 
+    //Configure Hibernate to scan whole group9 package, use database config datasource and 
+    //additional SQL settings are applied 
     @Autowired
     private Environment environment;
  

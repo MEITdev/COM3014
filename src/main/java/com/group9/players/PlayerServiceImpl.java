@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.players;
 
 import com.group9.dao.PlayerDAO;
@@ -33,18 +28,31 @@ public class PlayerServiceImpl implements PlayerService {
     
     @Autowired
     TeamService teamService;
-     
+    
+    
+    /**
+     * Forward request to DAO and return Player
+     * @param id
+     * @return Player
+     */
     @Override
     public Player findById(int id) {
         return dao.findById(id);
     }
  
+    /**
+     * Save new player using DAO
+     * @param player 
+     */
     @Override
     public void savePlayer(Player player) {
         dao.savePlayer(player);
     }
  
-
+    /**
+     * Get latest revision of player and return it
+     * @param player 
+     */
     @Override
     public void getUpdatePlayer(Player player) {
         Player entity = dao.findById(player.getId());
@@ -74,6 +82,12 @@ public class PlayerServiceImpl implements PlayerService {
         return ( player == null || ((player.getId() == id)));
     }
     
+    /**
+     * Generate X number of new players and store them in database
+     * Forename and surname are taken randomly from github CSV file
+     * @param numberOfPlayers
+     * @return 
+     */
     @Override
     public ArrayList<Player> generateRandomPlayers(int numberOfPlayers){
         ArrayList<Player> players = new ArrayList<>();
@@ -113,11 +127,20 @@ public class PlayerServiceImpl implements PlayerService {
             }
         return players;
     }
-
+    /**
+     * Overwrite Player with new player information (update player)
+     * @param player 
+     */
     @Override
     public void updatePlayer(Player player) {
         dao.updatePlayer(player);
     }
+    
+    /**
+     * Return All player of specific user
+     * @param user
+     * @return 
+     */
     @Override
     public ArrayList<Player> getPlayers(User user){
         ArrayList<Player> players = new ArrayList<>();
@@ -132,7 +155,10 @@ public class PlayerServiceImpl implements PlayerService {
                 
         return players;
     }
-    
+    /**
+     * Returns all users that are not in any team
+     * @return 
+     */
     @Override
     public ArrayList<Player> getFreePlayers(){
         ArrayList<Player> freePlayers = new ArrayList<>();

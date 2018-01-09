@@ -8,8 +8,9 @@ package com.group9.login;
 import java.util.Iterator;
 
 /**
+ * This is a container class used for holding all of user roles
+ * 
  *
- * @author Black
  */
 public class RoleHolder {
 

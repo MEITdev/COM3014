@@ -7,7 +7,10 @@ package com.group9.players;
 
 import java.util.Comparator;
 
-
+/**
+ * Custom comparator for Player ids
+ * @author Black
+ */
 public class PlayerComparator implements Comparator<Player> {
     @Override
     public int compare(Player o1, Player o2) {

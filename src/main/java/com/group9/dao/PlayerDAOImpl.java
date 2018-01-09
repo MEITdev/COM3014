@@ -12,7 +12,6 @@ import java.util.List;
  
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
  
 
@@ -44,14 +43,7 @@ public class PlayerDAOImpl extends AbstractDao<Integer, Player> implements Playe
         return (List<Player>) criteria.list();
     }
  
-    /*
-    RESTRICTIONS
-    public Player getPlayerWithRestriction(String ssn) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("ssn", ssn));
-        return (Player) criteria.uniqueResult();
-    }
-    */
+    
 
     @Override
     public void updatePlayer(Player player) {

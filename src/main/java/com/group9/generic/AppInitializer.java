@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.generic;
 
-/**
- *
- * @author Black
- */
+
 import com.group9.config.AppConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,6 +10,10 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
  
+/**
+ * Handles registration of configs and init of this web application
+ * @author Black
+ */
 public class AppInitializer implements WebApplicationInitializer {
  
     public void onStartup(ServletContext container) throws ServletException {

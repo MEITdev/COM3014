@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.group9.generic;
 
 
 
 /**
- *
- * @author Black
+ * Common registry used for often changed variables that are static thougout the application
  */
 
 public class Registry {
     public static String[] publicSites = {"/", "/login", "/resources/**", "/register"};
-    public static String[] adminSites = {"/admin/**"};
+    public static String[] adminSites = {"/admin/**", "/player/*/update"};
 
     public static int startingBudget = 1000000;
     public static int upgradeCost = 5000;

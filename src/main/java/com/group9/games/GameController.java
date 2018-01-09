@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Ivan
  */
+
 package com.group9.games;
 
 import com.group9.players.Player;
@@ -26,17 +26,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- *
- * @author Ivan
- */
 
 @Controller
 @RequestMapping("/")
 public class GameController {
     
+    //Include all services needed for bean handleing
     @Autowired
     TeamService service;
     
@@ -46,9 +42,17 @@ public class GameController {
     @Autowired
     MessageSource messageSource;
     
+    //Custom jdbc template for users
     @Autowired
     private UserJDBCTemplate userJDBCTemplate;
     
+    
+    /**
+     * Lists all players/lootboxes and sorts them by ID, therefore from newest to oldest
+     * @param model
+     * @param principal
+     * @return 
+     */
     @GetMapping("game")
     public String listPlayers(ModelMap model, Principal principal) {
 
@@ -77,6 +81,12 @@ public class GameController {
         
     }
     
+    /**
+     * Displays a table of teams and their wins and losses
+     * @param model
+     * @param principal
+     * @return 
+     */
     @GetMapping("standings")
     public String standings(ModelMap model, Principal principal) {
 
@@ -89,6 +99,13 @@ public class GameController {
         return "standings";
     }
     
+    /**
+     * Lets player choose a team to play against
+     * @param model
+     * @param name
+     * @param principal
+     * @return 
+     */
     @GetMapping("game/play/{name}")
     public String playGame(ModelMap model, @PathVariable String name, Principal principal){
         
@@ -190,7 +207,12 @@ public class GameController {
         
         return "gameResult";
     }
-    
+    /**
+     * Generates random integer in range
+     * @param min
+     * @param max
+     * @return 
+     */
     private static int getRandomNumberInRange(int min, int max) {
 
 	if (min >= max) {

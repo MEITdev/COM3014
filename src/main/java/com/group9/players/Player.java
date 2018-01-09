@@ -11,8 +11,6 @@ package com.group9.players;
  */
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Objects;
  
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,13 +22,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
  
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import org.springframework.format.annotation.DateTimeFormat;
  
 @Entity
 @Table(name="PLAYER")

@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.group9.teams;
-
-/**
- *
- * @author Black
- */
-
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -79,6 +69,11 @@ public class Team implements Serializable {
     @Column(name = "player6ID", nullable = false)
     private int player6ID;
 
+    
+    /**
+     * Just getters and setters of all
+     * 
+     */
     public String getName() {
         return name;
     }
@@ -160,7 +155,11 @@ public class Team implements Serializable {
     }
     
     
-    
+    /**
+     * Custom equals for comparisons
+     * @param obj
+     * @return 
+     */
  
     @Override
     public boolean equals(Object obj) {

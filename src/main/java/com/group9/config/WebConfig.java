@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
- *
+ * Inpsired by lab sessions of this course
  * @author bogdan
  */
 @Configuration

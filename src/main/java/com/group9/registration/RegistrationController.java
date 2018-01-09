@@ -26,16 +26,27 @@ public class RegistrationController
     @Autowired
     private UserJDBCTemplate userJDBCTemplate;
     
-  @RequestMapping(value="/register", method=RequestMethod.GET)
-  public String viewRegistrationPage (ModelMap map)
-  {
-        
-      
-        return "register";
-  }
+    /**
+     * Return view registration jsp
+     * @param map
+     * @return 
+     */
+    @RequestMapping(value="/register", method=RequestMethod.GET)
+    public String viewRegistrationPage (ModelMap map)
+    {
+      return "register";
+    }
 	
   
-  
+   /**
+    * Handle registration POST request, ensuring correct error handling
+    * @param username
+    * @param password
+    * @param email
+    * @param teamName
+    * @param map
+    * @return 
+    */
   @RequestMapping(value="/register", method=RequestMethod.POST)
   public String handleRegistration (@RequestParam String username,@RequestParam String password,
           @RequestParam String email, @RequestParam String teamName, ModelMap map)
@@ -53,6 +64,7 @@ public class RegistrationController
             return "register";
         }  
         try {
+            //If all checks were successful, create a new user using JDBC template
             Set<UserRole> roles = new HashSet<UserRole>() {{add(UserRole.USER);}};
             userJDBCTemplate.create(username, password, email, 1, roles, Registry.startingBudget, teamName);
             map.put("message", "User successfully registered!");

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.players;
 
 
@@ -30,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +46,15 @@ public class PlayerController {
     @Autowired
     MessageSource messageSource;
  
-      @Autowired
+    @Autowired
     private UserJDBCTemplate userJDBCTemplate;
    
+    /**
+     * Get list of all players, sort them by ID and forward them to allPlayers JSP
+     * @param model
+     * @param principal
+     * @return 
+     */
     @GetMapping("players")
     public String listPlayers(ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -64,7 +64,12 @@ public class PlayerController {
         model.addAttribute("players", players);
         return "allplayers";
     }
-    
+    /**
+     * List all players, sort them but display them for in admin jsp
+     * @param model
+     * @param principal
+     * @return 
+     */
     @GetMapping("admin/players")
     public String listAdminPlayers(ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -75,6 +80,13 @@ public class PlayerController {
         return "adminplayers";
     }
     
+    /**
+     * Get Details of specific player
+     * @param model
+     * @param id
+     * @param principal
+     * @return 
+     */
     @GetMapping("player/{id}")
     public String getPlayer(ModelMap model, @PathVariable int id, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -83,24 +95,34 @@ public class PlayerController {
         model.addAttribute("player", player);
         return "viewplayer";
     }
-    
+    /**
+     * Reroll a player to a brand new (generated) one
+     * @param model
+     * @param id
+     * @param principal
+     * @return 
+     */
     @GetMapping("players/{id}/switch/")
     public String switchPlayer(ModelMap model, @PathVariable int id, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
-        
+        //Check security levels of user
         if(SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
                 try {
-                    
+                    //Find current player
                     Player player = service.findById(id);
-                    
+                    //Find current user
                     User u = userJDBCTemplate.getUser(principal.getName());
+                    //Is the player owned by this user?
                     if(GenericHelper.isPlayerInList(service.getPlayers(u), player)){
+                        //Does the user have enough money?
                         if(u.getBudget() > Registry.lootBoxPrice){
+                            //Lower his budget
                             u.setBudget(u.getBudget()-Registry.lootBoxPrice);
                             userJDBCTemplate.updateBudget(u.getUsername(), u.getBudget());
                             
+                            //Update team
                             Team t = teamService.findByName(u.getTeamName());
                             
                             Player newPlayer = service.generateRandomPlayers(1).get(0);
@@ -109,7 +131,7 @@ public class PlayerController {
                             
                             player.setInTeam(0);
                             service.updatePlayer(player);
-                            
+                            //Find the right position of the player
                             if(t.getPlayer1ID() == id){
                                 t.setPlayer1ID(newPlayer.getId());
                             }else if(t.getPlayer2ID() == id){
@@ -123,6 +145,7 @@ public class PlayerController {
                             }else if(t.getPlayer6ID() == id){
                                 t.setPlayer6ID(newPlayer.getId());
                             }
+                            //Update team DB
                             teamService.updatePostTeam(t);
                             model.put("message", "Congratulations! You have bought a lootpack!");
                         }else{
@@ -144,11 +167,19 @@ public class PlayerController {
     }
     
     //UPGRADES
+    /**
+     * Display upgrades for specific player
+     * @param model
+     * @param id
+     * @param principal
+     * @return 
+     */
     @GetMapping("/players/{id}/upgrade/")
     public String getPlayerUpgrade(ModelMap model, @PathVariable int id, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         Player playerout = service.findById(id);
         model.addAttribute("player", playerout);
+        //Calculate cost
         model.addAttribute("pricedef", GenericHelper.calculateCost(playerout.getDefense()));
         model.addAttribute("priceoff", GenericHelper.calculateCost(playerout.getOffense()));
         
@@ -165,20 +196,27 @@ public class PlayerController {
       
     }
     
-    //Switch
-    
-    
+    /**
+     * Handle upgrade post request for player
+     * @param type
+     * @param id
+     * @param model
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value = { "/players/{id}/upgrade/" }, method = RequestMethod.POST)
     public String upgradePlayer(@RequestParam String type, @PathVariable int id, 
             ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
+        //Check player security levels
         if(SecurityContextHolder.getContext().getAuthentication() != null &&
             SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
             !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
             try {
+                //Get player
                 Player player = service.findById(id);
                 int ugpradeLevel = 0;
-                
+                //Select if we want to upgrade def or off
                 if(type.contentEquals("def")){
                     ugpradeLevel = player.getDefense();
                     player.setDefense(Math.min(99, player.getDefense()+3));
@@ -188,16 +226,17 @@ public class PlayerController {
                     player.setOffense(Math.min(99, player.getOffense()+3));
                 }
 
-
+                //Get User
                 User user = userJDBCTemplate.getUser(principal.getName());
                 
                 
                 model.addAttribute("budget", user.getBudget());
                 
-                
+                //Update budget and cost
                 int cost = GenericHelper.calculateCost(ugpradeLevel);
                 if(user != null && user.getBudget() > cost){
                     if(GenericHelper.isPlayerInList(service.getPlayers(user), player)){
+                        //Update player
                         userJDBCTemplate.updateBudget(user.getUsername(), user.getBudget()-cost);
                         service.updatePlayer(player);
                         model.put("message", "Player has been upgraded");
@@ -219,7 +258,7 @@ public class PlayerController {
             }
             
         }
-        
+        //Display new player stats
         Player playerout = service.findById(id);
         model.addAttribute("player", playerout);
         
@@ -229,7 +268,13 @@ public class PlayerController {
       
 
     }
- 
+    /**
+     * REST update of player
+     * @param model
+     * @param id
+     * @param principal
+     * @return 
+     */
     @GetMapping("player/{id}/update")
     public String getPlayerUpdate(ModelMap model, @PathVariable int id, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -243,12 +288,20 @@ public class PlayerController {
         model.addAttribute("edit", true);
         return "reg_player";
     }
-    
+    /**
+     * Handle post request of player update, propagate this change to the db
+     * @param player
+     * @param result
+     * @param model
+     * @param principal
+     * @return 
+     */
     @RequestMapping(value = { "/player/{id}/update" }, method = RequestMethod.POST)
     public String updatePOSTPlayer(@Valid Player player, BindingResult result,
             ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
- 
+        model.addAttribute("player", player);
+        model.addAttribute("edit", true);
         if (result.hasErrors()) {
             return "reg_player";
         }
@@ -261,12 +314,17 @@ public class PlayerController {
         }
          
         service.updatePlayer(player);
-        model.addAttribute("player", player);
-        model.addAttribute("edit", true);
+        
         model.addAttribute("message", "Player " + player.getForename()+ " updated successfully");
         return "reg_player";
     }
     
+    /**
+     * Get registry page for a new user
+     * @param model
+     * @param principal
+     * @return 
+     */
     @GetMapping("/player/new")
     public String newPlayer(ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -278,7 +336,14 @@ public class PlayerController {
     }
  
     
-   
+   /**
+    * Handle new user post request
+    * @param player
+    * @param result
+    * @param model
+    * @param principal
+    * @return 
+    */
     @RequestMapping(value = { "/player/new" }, method = RequestMethod.POST)
     public String savePlayer(@Valid Player player, BindingResult result,
             ModelMap model, Principal principal) {
@@ -306,7 +371,13 @@ public class PlayerController {
      
     
    
-
+    /**
+     * Delete user via service
+     * @param id
+     * @param principal
+     * @param model
+     * @return 
+     */
     @RequestMapping(value="player/delete", method=RequestMethod.POST)
     public String deleteUser(@RequestParam int id, Principal principal, ModelMap model) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
@@ -315,7 +386,14 @@ public class PlayerController {
         return "redirect:/admin/players";
     }
     
-    @RequestMapping(value = { "/new/random/{number}" }, method = RequestMethod.GET)
+    /**
+     * Generate random X number of players
+     * @param number
+     * @param model
+     * @param principal
+     * @return 
+     */
+    @RequestMapping(value = { "/admin/random/{number}" }, method = RequestMethod.GET)
        public String generatePlayer(@PathVariable int number, ModelMap model, Principal principal) {
            
            GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);

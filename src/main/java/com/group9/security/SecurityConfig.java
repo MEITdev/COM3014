@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.group9.security;
 
 
-import com.group9.dao.UserDAO;
 import com.group9.generic.Registry;
 import javax.sql.DataSource;
 
@@ -17,8 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-
 
 
 @Configuration
@@ -33,7 +25,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     private DataSource dataSource;
     
 
-
+    /***
+     * Ensure usage of datasource bean and Bcrypt encryption
+     * @param auth
+     * @throws Exception 
+     */
     @Autowired
     public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception
     {
@@ -44,14 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-            
+            //Permit public access only to the sites in registry
             .antMatchers(Registry.publicSites).permitAll()
+                //Allow only admin access based on registry
             .antMatchers(Registry.adminSites).hasRole("ADMIN").
                 anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(new RefererRedirectionAuthenticationSuccessHandler())
                 .loginPage("/login").and().
                 
+                //Force application to be redirected to secure ssl/HTTPS
             httpBasic().and().requiresChannel().anyRequest().requiresSecure();
         
         

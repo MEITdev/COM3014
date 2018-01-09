@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.group9.index;
 
 
@@ -43,7 +39,13 @@ public class WelcomeController
     @Autowired
     PlayerService playerService;
     
-    
+    /**
+     * Based on if player is logged or not, serve them either welcome page for 
+     * non-logged in users or logged in users
+     * @param model
+     * @param principal
+     * @return 
+     */
 @RequestMapping(value="/", method=RequestMethod.GET)
   public String welcomePage (ModelMap model, Principal principal)
   {
@@ -66,7 +68,14 @@ public class WelcomeController
     return "index";
     
   }
-  
+  /**
+   * This page servers as a backup/alteration for welcome page
+   * Displays team and all users. Based on the budget user can modify players
+   * by either upgrading or generating new one via lootbox
+   * @param model
+   * @param principal
+   * @return 
+   */
   @RequestMapping(value="/team", method=RequestMethod.GET)
     public String viewTeamRosterPage (ModelMap model, Principal principal)
     {
