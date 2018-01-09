@@ -1,7 +1,7 @@
 package com.group9.generic;
 
-import com.group9.config.games.GameController;
-import com.group9.config.players.Player;
+import com.group9.games.GameController;
+import com.group9.players.Player;
 import com.group9.exceptions.RoleNotRecognised;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.login.User;

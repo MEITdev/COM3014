@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.games;
+package com.group9.games;
 
-import com.group9.config.players.Player;
-import com.group9.config.players.PlayerService;
-import com.group9.config.teams.Team;
-import com.group9.config.teams.TeamService;
+import com.group9.players.Player;
+import com.group9.players.PlayerService;
+import com.group9.teams.Team;
+import com.group9.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.GenericHelper;
 import com.group9.login.User;

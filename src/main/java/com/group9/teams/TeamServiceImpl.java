@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.teams;
+package com.group9.teams;
 
-import com.group9.config.dao.TeamDAO;
-import com.group9.config.players.Player;
+import com.group9.dao.TeamDAO;
+import com.group9.players.Player;
 import com.group9.login.User;
 import java.util.List;
  

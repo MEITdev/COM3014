@@ -9,11 +9,11 @@ package com.group9.login;
  *
  * @author Black
  */
-import com.group9.config.dao.UserDAO;
-import com.group9.config.players.Player;
-import com.group9.config.players.PlayerService;
-import com.group9.config.teams.Team;
-import com.group9.config.teams.TeamService;
+import com.group9.dao.UserDAO;
+import com.group9.players.Player;
+import com.group9.players.PlayerService;
+import com.group9.teams.Team;
+import com.group9.teams.TeamService;
 import com.group9.exceptions.RoleNotRecognised;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.generic.BCryptHelper;

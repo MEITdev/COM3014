@@ -1,9 +1,9 @@
 package com.group9.login;
 
-import com.group9.config.players.Player;
-import com.group9.config.players.PlayerService;
-import com.group9.config.teams.Team;
-import com.group9.config.teams.TeamService;
+import com.group9.players.Player;
+import com.group9.players.PlayerService;
+import com.group9.teams.Team;
+import com.group9.teams.TeamService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

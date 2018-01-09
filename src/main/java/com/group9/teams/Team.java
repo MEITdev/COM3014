@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.teams;
+package com.group9.teams;
 
 /**
  *

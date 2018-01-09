@@ -5,8 +5,8 @@
  */
 package com.group9.login;
 
-import com.group9.config.players.PlayerService;
-import com.group9.config.teams.TeamService;
+import com.group9.players.PlayerService;
+import com.group9.teams.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

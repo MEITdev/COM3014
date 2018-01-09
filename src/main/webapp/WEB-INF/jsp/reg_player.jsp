@@ -19,7 +19,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Footballs</title>
         
-        <!-- Bootstrap -->
+        <c:choose>
+            <c:when test="${edit}">
+                <!-- Bootstrap -->
+        <link href="../../resources/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="../../resources/css/font-awesome.css" rel="stylesheet">
+        <!-- NProgress -->
+        <link href="../../resources/css/nprogress.css" rel="stylesheet">
+        <!-- iCheck -->
+        <link href="../../resources/css/green.css" rel="stylesheet">
+        <!-- bootstrap-progressbar -->
+        <link href="../../resources/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- JQVMap -->
+        <link href="../../resources/css/jqvmap.min.css" rel="stylesheet"/>
+
+        <!-- Custom Theme Style -->
+        <link href="../../resources/css/custom.min.css" rel="stylesheet">
+            </c:when>
+            <c:otherwise>
+                <!-- Bootstrap -->
         <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
         <link href="../resources/css/font-awesome.css" rel="stylesheet">
@@ -34,6 +53,9 @@
 
         <!-- Custom Theme Style -->
         <link href="../resources/css/custom.min.css" rel="stylesheet">
+            </c:otherwise>
+        </c:choose>
+        
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -51,15 +73,23 @@
                     <div class="">
 
                         <div class="clearfix"></div>
-                        <h2>Add User</h2>
+                        <c:choose>
+                            <c:when test="${edit}">
+                                <h2>Edit User</h2>
+                            </c:when>
+                            <c:otherwise>
+                                <h2>Add User</h2>
+                            </c:otherwise>
+                        </c:choose>
+                        
                             
-  
+                            ${message}
                             <form:form method="POST" modelAttribute="player">
                                 <form:input type="hidden" path="id" id="id"/>
                                 <table>
                                     <tr>
                                         <td><label for="forename">Forename: </label> </td>
-                                        <td><form:input path="forename" id="forename"/></td>
+                                        <td><form:input path="forename" id="forename" /></td>
                                         <td><form:errors path="forename" cssClass="error"/></td>
                                     </tr>
                                     <tr>
@@ -78,12 +108,12 @@
                                         <td><form:errors path="age" cssClass="error"/></td>
                                     </tr>
                                     <tr>
-                                        <td><label for="offense">Offense: </label> </td>
+                                        <td><label for="offense">Offence: </label> </td>
                                         <td><form:input path="offense" id="offense"/></td>
                                         <td><form:errors path="offense" cssClass="error"/></td>
                                     </tr>
                                     <tr>
-                                        <td><label for="defense">Defense: </label> </td>
+                                        <td><label for="defense">Defence: </label> </td>
                                         <td><form:input path="defense" id="defense"/></td>
                                         <td><form:errors path="defense" cssClass="error"/></td>
                                     </tr>
@@ -105,14 +135,28 @@
                             </form:form>
                             <br/>
                             <br/>
-                            Go back to <a href="<c:url value='/players' />">List of All Players</a>
+                                Go back to <a href="<c:url value='/admin/players' />">List of All Players</a>
                           </div>
                 </div>
                 <%@ include file="/WEB-INF/jspf/footer.jspf"%>
             </div>
         </div>
         
-        <!-- jQuery -->
+            <c:choose>
+            <c:when test="${edit}">
+                <!-- jQuery -->
+        <script src="../../resources/js/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="../../resources/js/bootstrap.min.js"></script>
+        <!-- bootstrap-progressbar -->
+        <script src="../../resources/js/bootstrap-progressbar.min.js"></script>
+        <!-- Skycons -->
+        <script src="../../resources/js/skycons.js"></script>
+        <!-- Custom Theme Scripts -->
+        <script src="../../resources/js/custom.min.js"></script>
+            </c:when>
+            <c:otherwise>
+                <!-- jQuery -->
         <script src="../resources/js/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="../resources/js/bootstrap.min.js"></script>
@@ -122,5 +166,8 @@
         <script src="../resources/js/skycons.js"></script>
         <!-- Custom Theme Scripts -->
         <script src="../resources/js/custom.min.js"></script>
+            </c:otherwise>
+        </c:choose>
+        
     </body>
 </html>

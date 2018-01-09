@@ -52,7 +52,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
-                                        <h2>Users</h2>
+                                        <h2>All Players/Lootboxes</h2>
                                         <ul class="nav navbar-right">
                                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                         </ul>
@@ -67,35 +67,33 @@
                                         <table id="usersTable" class="table table-striped table-bordered">
                                         <thead>
                                           <tr>
-                                            <th>Username</th>
-                                                          <th>Password</th>
-                                                          <th>Email</th>
-                                                          <th>Enabled</th>
-                                                          <th>Is User</th>
-                                                          <th>Is Premium</th>
-                                                          <th>Is Admin</th>
+                                            
+                                                          <th>Forename</th>
+                                                          <th>Surname</th>
+                                                          <th>Offence</th>
+                                                          <th>Defence</th>
+                                                          <th>Is In Team</th>
                                                           <th>Update</th>
                                                           <th>Delete</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${users}" var="user">
+                                            <c:forEach items="${players}" var="player">
                                                           <tr>
-                                                                  <td>${user.username}</td>
-                                                                  <td>${user.password}</td>
-                                                                  <td>${user.email}</td>
-                                                                  <td>${user.enabled}</td>
-                                                                  <td>${user.roleStringHolder.isUser}</td>
-                                                                  <td>${user.roleStringHolder.isPremium}</td>
-                                                                  <td>${user.roleStringHolder.isAdmin}</td>
+                                                                  <td>${player.forename}</td>
+                                                                  <td>${player.surname}</td>
+                                                                  <td>${player.offense}</td>
+                                                                  <td>${player.defense}</td>
+                                                                  <td>${player.inTeam}</td>
                                                                   
-                                                                  <c:url value="/admin/users/${user.username}/update/" var="updateuser" />
+                                                                  
+                                                                  <c:url value="/player/${player.id}/update" var="updateuser" />
                                                                   <td><a class="fa fa-edit" href="${updateuser}">Update</a></td>
 
-                                                                  <c:url value="/admin/users/delete/" var="deleteuser" />
+                                                                  <c:url value="/player/delete" var="deleteuser" />
                                                                   
                                                                   <td> <form action="${deleteuser}" method="post">
-                                                                      <input type="hidden" id="username" name="username" value="${user.username}" />
+                                                                      <input type="hidden" id="id" name="id" value="${player.id}" />
                                                                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                                                       <button type="submit" class="fa fa-delete">Delete</button>
                                                                   </form></td>

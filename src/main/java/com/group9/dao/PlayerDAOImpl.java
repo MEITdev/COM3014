@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.dao;
+package com.group9.dao;
 
 
  
-import com.group9.config.players.Player;
+import com.group9.players.Player;
 import java.util.List;
  
 import org.hibernate.Criteria;
@@ -32,7 +32,7 @@ public class PlayerDAOImpl extends AbstractDao<Integer, Player> implements Playe
  
     @Override
     public void deletePlayerById(int id){
-        Query query = getSession().createSQLQuery("delete from players where player_id = :id");
+        Query query = getSession().createSQLQuery("delete from player where id = :id");
         query.setInteger("id", id);
         query.executeUpdate();
     }

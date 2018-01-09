@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.dao;
+package com.group9.dao;
 
 import java.io.Serializable;
  

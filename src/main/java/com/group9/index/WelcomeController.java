@@ -6,11 +6,11 @@
 package com.group9.index;
 
 
-import com.group9.config.games.GameController;
-import com.group9.config.players.Player;
-import com.group9.config.players.PlayerService;
-import com.group9.config.teams.Team;
-import com.group9.config.teams.TeamService;
+import com.group9.games.GameController;
+import com.group9.players.Player;
+import com.group9.players.PlayerService;
+import com.group9.teams.Team;
+import com.group9.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.GenericHelper;
 import com.group9.generic.Registry;

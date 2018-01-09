@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.players;
+package com.group9.players;
 
 
-import com.group9.config.teams.Team;
-import com.group9.config.teams.TeamService;
+import com.group9.teams.Team;
+import com.group9.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
 import com.group9.generic.GenericHelper;
 import com.group9.generic.Registry;
@@ -63,6 +63,16 @@ public class PlayerController {
         Collections.sort(players, new PlayerComparator());
         model.addAttribute("players", players);
         return "allplayers";
+    }
+    
+    @GetMapping("admin/players")
+    public String listAdminPlayers(ModelMap model, Principal principal) {
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
+        List<Player> players = service.findAllPlayers();
+        
+        Collections.sort(players, new PlayerComparator());
+        model.addAttribute("players", players);
+        return "adminplayers";
     }
     
     @GetMapping("player/{id}")
@@ -220,7 +230,42 @@ public class PlayerController {
 
     }
  
+    @GetMapping("player/{id}/update")
+    public String getPlayerUpdate(ModelMap model, @PathVariable int id, Principal principal) {
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
+        
+        Player player = service.findById(id);
+        if(player == null){
+            return "redirect:/admin/players";
+        }
+        
+        model.addAttribute("player", player);
+        model.addAttribute("edit", true);
+        return "reg_player";
+    }
     
+    @RequestMapping(value = { "/player/{id}/update" }, method = RequestMethod.POST)
+    public String updatePOSTPlayer(@Valid Player player, BindingResult result,
+            ModelMap model, Principal principal) {
+        GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
+ 
+        if (result.hasErrors()) {
+            return "reg_player";
+        }
+ 
+       
+        if(!service.isPlayerIDUnique(player.getId())){
+            FieldError idError = new FieldError("player","id",messageSource.getMessage("non.unique.id", new Integer[]{player.getId()}, Locale.getDefault()));
+            result.addError(idError);
+            return "reg_player";
+        }
+         
+        service.updatePlayer(player);
+        model.addAttribute("player", player);
+        model.addAttribute("edit", true);
+        model.addAttribute("message", "Player " + player.getForename()+ " updated successfully");
+        return "reg_player";
+    }
     
     @GetMapping("/player/new")
     public String newPlayer(ModelMap model, Principal principal) {
@@ -232,6 +277,7 @@ public class PlayerController {
         return "reg_player";
     }
  
+    
    
     @RequestMapping(value = { "/player/new" }, method = RequestMethod.POST)
     public String savePlayer(@Valid Player player, BindingResult result,
@@ -251,19 +297,22 @@ public class PlayerController {
          
         service.savePlayer(player);
  
-        model.addAttribute("success", "Player " + player.getForename()+ " registered successfully");
-        return "success";
+        model.addAttribute("message", "Player " + player.getForename()+ " registered successfully");
+        return "reg_player";
     }
  
  
     
      
-    @DeleteMapping("player/delete")
-    public String deletePlayer(@RequestParam int id, Principal principal, ModelMap model) {
+    
+   
+
+    @RequestMapping(value="player/delete", method=RequestMethod.POST)
+    public String deleteUser(@RequestParam int id, Principal principal, ModelMap model) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         
         service.deletePlayerById(id);
-        return "redirect:/players";
+        return "redirect:/admin/players";
     }
     
     @RequestMapping(value = { "/new/random/{number}" }, method = RequestMethod.GET)
@@ -274,7 +323,7 @@ public class PlayerController {
            service.generateRandomPlayers(number);
            
            //model.addAttribute("success", "Employee " + player.getForename()+ " registered successfully");
-           return "success";
+           return "redirect:players";
        }
 }
 

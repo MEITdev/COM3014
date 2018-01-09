@@ -8,6 +8,7 @@
             <c:url value='/player/new' var="addPlayer" />
             <c:url value='/game' var="gamePage" />
             <c:url value='/standings' var="standingsPage" />
+            <c:url value='/admin/players' var="allPlayers" />
             <c:url value='/resources/img/user.png' var="imageRes" />
             
             
@@ -46,6 +47,7 @@
                       <ul class="nav child_menu">
                         <li><a href="${admin}">All Users</a></li>
                         <li><a href="${addUserPath}">Add User</a></li>
+                        <li><a href="${allPlayers}">All Players</a></li>
                         <li><a href="${addPlayer}">Add Player</a></li>
                       </ul>
                     </li>

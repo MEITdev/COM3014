@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.editusers;
+package com.group9.editusers;
 
-import com.group9.config.games.GameController;
-import com.group9.config.teams.TeamService;
+import com.group9.games.GameController;
+import com.group9.teams.TeamService;
 import com.group9.exceptions.TeamNameAlreadyExists;
 import com.group9.exceptions.UserAlreadyExistsException;
 import com.group9.exceptions.UserNotFoundException;

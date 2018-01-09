@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.group9.config.dao;
+package com.group9.dao;
 
-import com.group9.config.games.Game;
+import com.group9.games.Game;
 import java.util.List;
 
 /**
