@@ -6,7 +6,6 @@
 package com.group9.config.players;
 
 
-import com.group9.config.games.GameController;
 import com.group9.config.teams.Team;
 import com.group9.config.teams.TeamService;
 import com.group9.exceptions.UserNotFoundException;
@@ -15,6 +14,7 @@ import com.group9.generic.Registry;
 import com.group9.login.User;
 import com.group9.login.UserJDBCTemplate;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -59,6 +59,8 @@ public class PlayerController {
     public String listPlayers(ModelMap model, Principal principal) {
         GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
         List<Player> players = service.findAllPlayers();
+        
+        Collections.sort(players, new PlayerComparator());
         model.addAttribute("players", players);
         return "allplayers";
     }
@@ -275,3 +277,4 @@ public class PlayerController {
            return "success";
        }
 }
+

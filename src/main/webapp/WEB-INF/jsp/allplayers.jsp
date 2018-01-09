@@ -85,7 +85,6 @@
                                             </c:forEach>
                                         </div>
                                         <br/>
-                                        <form:form method="DELETE" action="/client/invoices/a"><input type="submit" value="delete"></form:form>
                                     </div>
                                 </div>  
                             </div>

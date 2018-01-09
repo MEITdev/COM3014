@@ -13,7 +13,7 @@
           <b>Failed</b> to login.
         
       </div>
-     </core:if>
+     </core:if> 
      
      <div>
          <span>${param.message}</span>
