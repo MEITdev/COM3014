@@ -14,7 +14,9 @@
         
       </div>
      </core:if>
+     
      <div>
+         <span>${param.message}</span>
       <input type="text" class="form-control" placeholder="Username" id="username" name="username" />
      </div>
      <div>

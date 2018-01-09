@@ -72,7 +72,8 @@ public class WelcomeController
     {
         try {
             GenericHelper.handleUserInfo(model, principal, userJDBCTemplate);
-            model.addAttribute("isPremium", (principal != null && (GenericHelper.isAdmin(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
+            
+            model.addAttribute("isPremium", (principal != null && (GenericHelper.isPremium(userJDBCTemplate.getUser(principal.getName()).getRoles()))));
             model.addAttribute("hasEnough", (principal != null && userJDBCTemplate.getUser(principal.getName()).getBudget() > Registry.lootBoxPrice));
             model.addAttribute("lootboxPrice", Registry.lootBoxPrice);
         } catch (UserNotFoundException ex) {

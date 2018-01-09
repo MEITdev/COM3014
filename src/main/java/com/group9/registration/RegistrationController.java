@@ -40,11 +40,23 @@ public class RegistrationController
   public String handleRegistration (@RequestParam String username,@RequestParam String password,
           @RequestParam String email, @RequestParam String teamName, ModelMap map)
   {
-        
+        if(username.length() < 4 || username.length() > 40){
+            map.put("message", "Username has to be between 4 and 40 characters long");
+            return "register";
+        }  
+        if(email.length() < 4 || email.length() > 40){
+            map.put("message", "Email has to be between 4 and 40 characters long");
+            return "register";
+        }  
+        if(password.length() < 4 || password.length() > 40){
+            map.put("message", "Password has to be between 4 and 40 characters long");
+            return "register";
+        }  
         try {
             Set<UserRole> roles = new HashSet<UserRole>() {{add(UserRole.USER);}};
             userJDBCTemplate.create(username, password, email, 1, roles, Registry.startingBudget, teamName);
             map.put("message", "User successfully registered!");
+            return "redirect:/login";
         } catch (UserAlreadyExistsException ex) {
             map.put("message", "Username already taken!");
         } catch (TeamNameAlreadyExists ex) {

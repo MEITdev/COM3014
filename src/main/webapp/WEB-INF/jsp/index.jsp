@@ -1,9 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : 27-Dec-2017, 17:34:56
-    Author     : Black
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
